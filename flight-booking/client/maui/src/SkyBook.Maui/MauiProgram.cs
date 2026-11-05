@@ -26,7 +26,6 @@ public static class MauiProgram
         builder
             .UseMauiApp<App>()
             .ConfigureSyncfusionCore()
-            .UseA2UIWithSyncfusionComponents(CatalogId)
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("Roboto-Regular.ttf", "RobotoRegular");
@@ -34,6 +33,7 @@ public static class MauiProgram
                 fonts.AddFont("Roboto-Bold.ttf", "RobotoBold");
             });
 
+        builder.Services.AddSingleton(_ => SkyBook.Maui.Ui.SkyHost.Create(CatalogId));
         builder.Services.AddSingleton(_ => new HttpClient { Timeout = TimeSpan.FromMinutes(3) });
         builder.Services.AddSingleton<SkyBook.Core.IAgentClient>(sp => AppConfig.RemoteAgentUrl is { } remote
             ? new SkyBook.Core.AgentClient(sp.GetRequiredService<HttpClient>(), remote)

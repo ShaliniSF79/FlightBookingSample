@@ -55,7 +55,7 @@ public class DesignTests
         using var host = NewHost();
         host.ProcessJson(File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "designs_maui", "stage2-flight-results.json")));
         var surface = host.Surfaces["workspace"];
-        Assert.NotNull(surface.ComponentsModel["bookBtn"]);
+        Assert.NotNull(surface.ComponentsModel["flightsGrid"]);
         Assert.NotNull(surface.DataModel.Get("/filteredFlights"));
     }
 }

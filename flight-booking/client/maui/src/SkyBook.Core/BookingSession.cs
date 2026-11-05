@@ -47,12 +47,26 @@ public sealed class BookingSession
         else Merge(ctx, ownLite);
         var merged = new JsonObject { ["name"] = name, ["context"] = ctx };
 
-        var summary = ActionSummarizer.Summarize(merged);
+        var summary = isBook ? BookSummary(ctx) : ActionSummarizer.Summarize(merged);
         var json = merged.ToJsonString();
         var payload = isBook
             ? $"The user clicked \"Book now\". Show the booking confirmation page (stage 3) now, NOT the search form. Use exactly these user details and chosen flight, do not invent any: {json}"
             : json;
         return new ActionPrompt(summary, payload);
+    }
+
+    private static string BookSummary(JsonObject ctx)
+    {
+        var f = ctx["selectedFlight"] as JsonObject;
+        string Get(JsonNode? n) => n is JsonValue v ? (v.TryGetValue<string>(out var s) ? s : v.ToJsonString().Trim('"')) : "";
+        var flight = Get(f?["flight"]);
+        var price = Get(f?["price"]);
+        var from = Get(ctx["from"]); var to = Get(ctx["to"]);
+        return ActionSummarizer.Summarize(new JsonObject
+        {
+            ["name"] = "selectFlight",
+            ["context"] = new JsonObject { ["flight"] = flight == "" ? null : flight, ["from"] = from == "" ? null : from, ["to"] = to == "" ? null : to, ["price"] = price == "" ? null : price },
+        });
     }
 
     /// <summary>Port of the outgoing-text assembly in <c>sendToAgent</c>. Call after <see cref="RecordUserPrompt"/>.</summary>

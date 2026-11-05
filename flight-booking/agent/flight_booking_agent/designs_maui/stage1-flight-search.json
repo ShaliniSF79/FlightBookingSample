@@ -14,19 +14,19 @@
         {
           "id": "root",
           "component": "Column",
-          "gap": 16,
+          "gap": 14,
           "children": [
             "title",
             "subtitle",
             "formCard"
           ],
-          "padding": 24
+          "padding": 20
         },
         {
           "id": "title",
           "component": "Text",
           "text": "✈️ Find Your Perfect Flight",
-          "variant": "h2"
+          "variant": "h3"
         },
         {
           "id": "subtitle",
@@ -38,14 +38,14 @@
           "id": "formCard",
           "component": "SyncfusionCardView",
           "content": "formCol",
-          "cornerRadius": 16,
+          "cornerRadius": 14,
           "borderWidth": 1,
           "borderColor": "#e2e8f0"
         },
         {
           "id": "formCol",
           "component": "Column",
-          "gap": 14,
+          "gap": 10,
           "children": [
             "row1",
             "row2",
@@ -53,7 +53,8 @@
             "row4",
             "row5",
             "searchBtn"
-          ]
+          ],
+          "padding": 20
         },
         {
           "id": "row1",
@@ -299,10 +300,10 @@
         {
           "id": "searchBtn",
           "component": "SyncfusionButton",
-          "text": "🔎 Search Flights",
+          "text": "Search Flights",
           "background": "#2563eb",
           "textColor": "#ffffff",
-          "cornerRadius": 14,
+          "cornerRadius": 8,
           "fontAttributes": "Bold",
           "onClick": {
             "event": {

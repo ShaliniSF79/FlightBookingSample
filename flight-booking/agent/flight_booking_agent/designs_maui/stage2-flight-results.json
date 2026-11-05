@@ -16,25 +16,58 @@
           "component": "Column",
           "gap": 16,
           "children": [
-            "title",
-            "summaryCard",
-            "resultsCard"
+            "appbar",
+            "bodyCol"
           ],
-          "padding": 24
+          "padding": 0
         },
         {
-          "id": "title",
-          "component": "Text",
-          "text": "Flight Results",
-          "variant": "h2"
+          "id": "appbar",
+          "component": "SkyAppBar",
+          "title": "Flight Results",
+          "background": "#4f46e5",
+          "textColor": "#ffffff"
+        },
+        {
+          "id": "bodyCol",
+          "component": "Column",
+          "gap": 16,
+          "padding": 20,
+          "children": [
+            "summaryCard",
+            "resultsCard"
+          ]
         },
         {
           "id": "summaryCard",
           "component": "SyncfusionCardView",
-          "content": "summaryText",
-          "cornerRadius": 16,
+          "content": "summaryCol",
+          "cornerRadius": 14,
           "borderWidth": 1,
           "borderColor": "#e2e8f0"
+        },
+        {
+          "id": "summaryCol",
+          "component": "Column",
+          "gap": 12,
+          "padding": 20,
+          "children": [
+            "summaryTitle",
+            "summarySub",
+            "summaryText"
+          ]
+        },
+        {
+          "id": "summaryTitle",
+          "component": "Text",
+          "text": "Trip Summary",
+          "variant": "h4"
+        },
+        {
+          "id": "summarySub",
+          "component": "Text",
+          "text": "Search criteria",
+          "variant": "caption"
         },
         {
           "id": "summaryText",
@@ -47,55 +80,32 @@
           "id": "resultsCard",
           "component": "SyncfusionCardView",
           "content": "resultsCol",
-          "cornerRadius": 16,
+          "cornerRadius": 14,
           "borderWidth": 1,
           "borderColor": "#e2e8f0"
         },
         {
           "id": "resultsCol",
           "component": "Column",
-          "gap": 8,
+          "gap": 12,
+          "padding": 20,
           "children": [
-            "flightsGrid",
-            "hint",
-            "bookBtn"
+            "resultsTitle",
+            "resultsSub",
+            "flightsGrid"
           ]
         },
         {
-          "id": "hint",
+          "id": "resultsTitle",
           "component": "Text",
-          "text": "Tap a flight row, then press Book now.",
-          "variant": "caption"
+          "text": "Available Flights",
+          "variant": "h4"
         },
         {
-          "id": "bookBtn",
-          "component": "SyncfusionButton",
-          "text": "Book now →",
-          "background": "#2563eb",
-          "textColor": "#ffffff",
-          "cornerRadius": 12,
-          "fontAttributes": "Bold",
-          "onClick": {
-            "event": {
-              "name": "selectFlightAndProceed",
-              "context": {
-                "selectedRow": {
-                  "path": "/selectedFlight"
-                },
-                "stage1": {
-                  "path": "/stage1"
-                },
-                "passengers": {
-                  "path": "/stage1/passengers"
-                },
-                "results": {
-                  "path": "/filteredFlights"
-                },
-                "activeStep": 1,
-                "nextStep": 2
-              }
-            }
-          }
+          "id": "resultsSub",
+          "component": "Text",
+          "text": "Choose a flight to continue to Booking",
+          "variant": "caption"
         },
         {
           "id": "flightsGrid",
@@ -106,59 +116,40 @@
           "columns": [
             {
               "field": "airline",
-              "headerText": "Airline",
-              "width": 140.0
+              "headerText": "Airline"
             },
             {
               "field": "flight",
-              "headerText": "Flight",
-              "width": 110.0
+              "headerText": "Flight"
             },
             {
               "field": "departure",
-              "headerText": "Departure",
-              "width": 150.0
+              "headerText": "Departure"
             },
             {
               "field": "arrival",
-              "headerText": "Arrival",
-              "width": 150.0
+              "headerText": "Arrival"
             },
             {
               "field": "duration",
-              "headerText": "Duration",
-              "width": 110.0
+              "headerText": "Duration"
             },
             {
               "field": "stops",
-              "headerText": "Stops",
-              "width": 100.0
-            },
-            {
-              "field": "baggage",
-              "headerText": "Baggage",
-              "width": 120.0
-            },
-            {
-              "field": "rating",
-              "headerText": "Rating",
-              "width": 90.0,
-              "textAlign": "end"
+              "headerText": "Stops"
             },
             {
               "field": "price",
               "headerText": "Price",
-              "width": 110.0,
               "textAlign": "end",
               "format": "C0"
             },
             {
               "field": "action",
-              "headerText": "Book now",
-              "width": 130.0
+              "headerText": "Book now"
             }
           ],
-          "sortingMode": "single",
+          "sortingMode": "none",
           "selectionMode": "single",
           "onRowClick": {
             "event": {
@@ -168,8 +159,7 @@
           },
           "selectedRowJson": {
             "path": "/selectedFlight"
-          },
-          "height": 360
+          }
         }
       ]
     }

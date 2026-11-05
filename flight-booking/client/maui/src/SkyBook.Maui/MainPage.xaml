@@ -61,7 +61,7 @@
                                     TextColor="{StaticResource CMuted}" Clicked="OnClearClicked" IsEnabled="False" AutomationId="clear" />
                         </Grid>
                         <HorizontalStackLayout x:Name="StagePillRow" Spacing="8" IsVisible="False">
-                            <Label Text="Current step" FontSize="11" TextColor="{StaticResource CMuted}" VerticalOptions="Center" />
+                            <Label Text="CURRENT STEP" FontSize="10.5" FontAttributes="Bold" CharacterSpacing="1" TextColor="{StaticResource CMuted}" VerticalOptions="Center" />
                             <Border Padding="12,5" StrokeThickness="0" StrokeShape="RoundRectangle 999" Background="{StaticResource BrandGradient}">
                                 <Label x:Name="StagePillLabel" FontSize="12" FontAttributes="Bold" TextColor="White" />
                             </Border>
@@ -85,22 +85,22 @@
                             </Label>
                             <Label Text="Start with a step below or simply ask SkyBook to help plan and book your trip."
                                    HorizontalTextAlignment="Center" FontSize="16" FontAttributes="Bold" TextColor="#334155" />
-                            <HorizontalStackLayout x:Name="JourneyRow" HorizontalOptions="Center" Spacing="18" />
+                            <HorizontalStackLayout x:Name="JourneyRow" HorizontalOptions="Center" Spacing="12" Margin="0,0,0,8" />
                             <FlexLayout x:Name="StageGrid" Wrap="Wrap" JustifyContent="Center" />
-                            <Border x:Name="AskPanel" StrokeShape="RoundRectangle 16" Stroke="{StaticResource CLine}" BackgroundColor="White" Padding="16">
+                            <Border x:Name="AskPanel" StrokeShape="RoundRectangle 16" Stroke="#c7d7fe" Background="{StaticResource AskPanelGradient}" Padding="16">
                                 <VerticalStackLayout Spacing="10">
                                     <HorizontalStackLayout Spacing="8">
-                                        <Label Text="✦" FontSize="16" TextColor="{StaticResource CPrimary}" />
-                                        <Label Text="Ask SkyBook to…" FontAttributes="Bold" TextColor="{StaticResource CInk}" />
+                                        <Border WidthRequest="30" HeightRequest="30" StrokeThickness="0" StrokeShape="RoundRectangle 10" Background="{StaticResource BrandGradient}"><Label Text="✦" FontSize="15" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center" /></Border>
+                                        <Label Text="Ask SkyBook to…" FontSize="15" FontAttributes="Bold" TextColor="{StaticResource CInk}" VerticalOptions="Center" />
                                     </HorizontalStackLayout>
                                     <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
-                                        <Border StrokeShape="RoundRectangle 10" Stroke="{StaticResource CLine}" Padding="10,2">
+                                        <Border StrokeShape="RoundRectangle 10" Stroke="{StaticResource CLine}" BackgroundColor="White" Padding="10,2">
                                             <Editor x:Name="WelcomeEditor" AutoSize="TextChanges" MaximumHeightRequest="140" MinimumHeightRequest="44"
                                                     Placeholder="Try: &quot;Find me a flight from New York to London next Friday&quot;"
                                                     TextChanged="OnWelcomeTextChanged" Completed="OnWelcomeSend" AutomationId="welcome-input" />
                                         </Border>
                                         <Button x:Name="WelcomeSendButton" Grid.Column="1" Text="Ask SkyBook" Clicked="OnWelcomeSend"
-                                                BackgroundColor="{StaticResource CPrimary}" TextColor="White" CornerRadius="8" IsEnabled="False"
+                                                BackgroundColor="{StaticResource CPrimary}" TextColor="White" CornerRadius="8" IsEnabled="False" VerticalOptions="Start" HeightRequest="46"
                                                 AutomationId="welcome-send" />
                                     </Grid>
                                 </VerticalStackLayout>
@@ -110,6 +110,7 @@
 
                     <!-- Conversation (React: SfAIAssistView equivalent) -->
                     <ai:SfAIAssistView x:Name="Assist" Grid.Row="1" Grid.RowSpan="2" IsVisible="False"
+                                       ShowActionButtons="False" EnableVoiceInput="False" AllowEditorExpansion="False"
                                        AssistItems="{Binding AssistItems}"
                                        ShowHeader="False"
                                        ShowResponseLoader="True"
@@ -123,12 +124,12 @@
             </Border>
 
             <!-- Surface pane (React: .surface-pane) -->
-            <Border x:Name="SurfacePane" Grid.Column="1" Style="{StaticResource PanelBorder}" Padding="0" IsVisible="False">
+            <Border x:Name="SurfacePane" Grid.Column="1" Style="{StaticResource PanelBorder}" Padding="0" IsVisible="False" StrokeShape="RoundRectangle 16">
                 <Grid RowDefinitions="Auto,Auto,*">
-                    <HorizontalStackLayout x:Name="Stepper" Grid.Row="0" Padding="16,12" Spacing="14" IsVisible="False" />
+                    <Grid x:Name="Stepper" Grid.Row="0" Padding="24,14" ColumnSpacing="0" BackgroundColor="#f8fafc" IsVisible="False" />
                     <ActivityIndicator x:Name="SurfaceLoading" Grid.Row="1" IsVisible="False" IsRunning="False" HeightRequest="20" Color="{StaticResource CPrimary}" />
                     <ScrollView x:Name="SurfaceScroll" Grid.Row="2" IsVisible="False">
-                        <a2ui:A2uiSurface x:Name="SurfaceView" Margin="12" />
+                        <a2ui:A2uiSurface x:Name="SurfaceView" />
                     </ScrollView>
                     <ScrollView x:Name="Placeholder" Grid.Row="2">
                         <VerticalStackLayout Padding="24" Spacing="14" HorizontalOptions="Center" MaximumWidthRequest="520">

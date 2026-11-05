@@ -15,21 +15,18 @@
           "id": "root",
           "component": "Column",
           "gap": 16,
+          "padding": 20,
           "children": [
             "successCard",
-            "heroTitle",
-            "heroSub",
-            "flightsRow",
-            "passengerTitle",
+            "heroCard",
             "passengerCard"
-          ],
-          "padding": 24
+          ]
         },
         {
           "id": "successCard",
           "component": "SyncfusionCardView",
           "content": "successText",
-          "cornerRadius": 16,
+          "cornerRadius": 10,
           "borderWidth": 1,
           "borderColor": "#e2e8f0",
           "indicatorColor": "#16a34a",
@@ -39,13 +36,32 @@
         {
           "id": "successText",
           "component": "Text",
-          "text": "✅ Booking confirmed successfully! Your e-ticket has been issued and sent to the passenger email addresses."
+          "text": "Booking confirmed successfully! Your e-ticket has been issued and sent to the passenger email."
+        },
+        {
+          "id": "heroCard",
+          "component": "SyncfusionCardView",
+          "content": "heroCol",
+          "cornerRadius": 14,
+          "borderWidth": 1,
+          "borderColor": "#e2e8f0"
+        },
+        {
+          "id": "heroCol",
+          "component": "Column",
+          "gap": 12,
+          "padding": 20,
+          "children": [
+            "heroTitle",
+            "heroSub",
+            "flightsRow"
+          ]
         },
         {
           "id": "heroTitle",
           "component": "Text",
           "text": "Booking Details",
-          "variant": "h2"
+          "variant": "h4"
         },
         {
           "id": "heroSub",
@@ -66,7 +82,7 @@
           "id": "outboundCard",
           "component": "SyncfusionCardView",
           "content": "outboundCol",
-          "cornerRadius": 16,
+          "cornerRadius": 12,
           "borderWidth": 1,
           "borderColor": "#e2e8f0",
           "weight": 1
@@ -79,7 +95,8 @@
             "outboundTitle",
             "outboundSub",
             "outboundText"
-          ]
+          ],
+          "padding": 16
         },
         {
           "id": "outboundTitle",
@@ -102,7 +119,7 @@
           "id": "returnCard",
           "component": "SyncfusionCardView",
           "content": "returnCol",
-          "cornerRadius": 16,
+          "cornerRadius": 12,
           "borderWidth": 1,
           "borderColor": "#e2e8f0",
           "weight": 1
@@ -115,7 +132,8 @@
             "returnTitle",
             "returnSub",
             "returnText"
-          ]
+          ],
+          "padding": 16
         },
         {
           "id": "returnTitle",
@@ -135,18 +153,35 @@
           "text": "2:00 PM LAX → 10:30 PM JFK\n1 Stop (ORD) • 8h 30m\nSeat 12A/12B • Terminal 5\nStatus: Ticketed"
         },
         {
+          "id": "passengerCard",
+          "component": "SyncfusionCardView",
+          "content": "passengerCol",
+          "cornerRadius": 14,
+          "borderWidth": 1,
+          "borderColor": "#e2e8f0"
+        },
+        {
+          "id": "passengerCol",
+          "component": "Column",
+          "gap": 10,
+          "padding": 20,
+          "children": [
+            "passengerTitle",
+            "passengerSub",
+            "passengerGrid"
+          ]
+        },
+        {
           "id": "passengerTitle",
           "component": "Text",
           "text": "Passenger Information",
           "variant": "h4"
         },
         {
-          "id": "passengerCard",
-          "component": "SyncfusionCardView",
-          "content": "passengerGrid",
-          "cornerRadius": 16,
-          "borderWidth": 1,
-          "borderColor": "#e2e8f0"
+          "id": "passengerSub",
+          "component": "Text",
+          "text": "Issued passengers and travel details",
+          "variant": "caption"
         },
         {
           "id": "passengerGrid",
@@ -157,33 +192,23 @@
           "columns": [
             {
               "field": "passenger",
-              "headerText": "Passenger",
-              "width": 180.0
+              "headerText": "Passenger"
             },
             {
               "field": "email",
-              "headerText": "Email",
-              "width": 220.0
-            },
-            {
-              "field": "phone",
-              "headerText": "Phone",
-              "width": 160.0
+              "headerText": "Email"
             },
             {
               "field": "passport",
-              "headerText": "Nationality/Passport",
-              "width": 220.0
+              "headerText": "Nationality/Passport"
             },
             {
               "field": "seatMeal",
-              "headerText": "Seat/Meal",
-              "width": 170.0
+              "headerText": "Seat/Meal"
             }
           ],
           "selectionMode": "none",
-          "sortingMode": "none",
-          "height": 170
+          "sortingMode": "none"
         }
       ]
     }
