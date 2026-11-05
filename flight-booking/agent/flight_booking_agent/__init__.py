@@ -13,7 +13,7 @@ Run the A2A server::
     flight-booking          # console script registered by the install
 """
 
-from .custom_providers import OpenRouterProvider
+from .custom_providers import AzureOpenAIProvider, OpenRouterProvider
 from .flight_booking_agent import DESIGNS_DIR, FlightBookingAgent
 
-__all__ = ["DESIGNS_DIR", "FlightBookingAgent", "OpenRouterProvider"]
+__all__ = ["DESIGNS_DIR", "FlightBookingAgent", "AzureOpenAIProvider", "OpenRouterProvider"]
