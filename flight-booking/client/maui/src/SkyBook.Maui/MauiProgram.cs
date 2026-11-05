@@ -10,6 +10,13 @@ public static class MauiProgram
     /// <summary>Catalog id the agent's MAUI designs declare in <c>createSurface</c>.</summary>
     public const string CatalogId = SyncfusionA2uiAppBuilderExtensions.DefaultCatalogId;
 
+    private static async Task<string> LoadDesignAsync(string file)
+    {
+        await using var stream = await FileSystem.OpenAppPackageFileAsync($"designs/{file}");
+        using var reader = new StreamReader(stream);
+        return await reader.ReadToEndAsync();
+    }
+
     public static MauiApp CreateMauiApp()
     {
         if (AppConfig.SyncfusionLicenseKey.Length > 0)
@@ -28,7 +35,9 @@ public static class MauiProgram
             });
 
         builder.Services.AddSingleton(_ => new HttpClient { Timeout = TimeSpan.FromMinutes(3) });
-        builder.Services.AddSingleton(sp => new SkyBook.Core.AgentClient(sp.GetRequiredService<HttpClient>(), AppConfig.AgentUrl));
+        builder.Services.AddSingleton<SkyBook.Core.IAgentClient>(sp => AppConfig.RemoteAgentUrl is { } remote
+            ? new SkyBook.Core.AgentClient(sp.GetRequiredService<HttpClient>(), remote)
+            : new SkyBook.Core.LocalAgent(LoadDesignAsync, sp.GetRequiredService<HttpClient>(), AppConfig.AzureOpenAi));
         builder.Services.AddSingleton<SkyBook.Core.BookingSession>();
         builder.Services.AddTransient<MainPage>();
 

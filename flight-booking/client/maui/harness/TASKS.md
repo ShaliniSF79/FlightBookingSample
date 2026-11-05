@@ -55,3 +55,4 @@ Project file already declares these targets conditionally (see `SkyBook.Maui.csp
 
 - [x] T33 Font switched from Open Sans to Roboto (Regular/Medium/Bold bundled)
 - [x] T34 Friendly 'agent unreachable' chat message; AgentClient sends fixed Content-Length; `harness/mock_agent.py` offline agent
+- [x] T35 In-app `LocalAgent` (C#, optional Azure OpenAI) replaces the need for the Python agent; `SKYBOOK_AGENT_URL` still selects the remote agent

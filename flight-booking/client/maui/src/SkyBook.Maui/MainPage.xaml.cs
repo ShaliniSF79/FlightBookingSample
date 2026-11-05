@@ -17,7 +17,7 @@ public partial class MainPage : ContentPage
     private enum Tab { Chat, Booking }
 
     private readonly SurfaceHost _host;
-    private readonly AgentClient _agent;
+    private readonly IAgentClient _agent;
     private readonly BookingSession _session;
     private readonly ChatViewModel _chat = new();
     private readonly List<Border> _stageCards = [];
@@ -32,7 +32,7 @@ public partial class MainPage : ContentPage
     private string? _silentPayload; // React: silentPayloadRef
     private SurfaceModel? _surface;
 
-    public MainPage(SurfaceHost host, AgentClient agent, BookingSession session)
+    public MainPage(SurfaceHost host, IAgentClient agent, BookingSession session)
     {
         InitializeComponent();
         _host = host; _agent = agent; _session = session;
@@ -286,6 +286,11 @@ public partial class MainPage : ContentPage
             var reply = await _agent.SendAsync(outgoing, _session.ContextId);
             if (reply.ContextId is not null) _session.ContextId = reply.ContextId;
 
+            if (reply.A2uiMessages is null && reply.AgentText.Length > 0)
+            {
+                _chat.AddBotMessage(reply.AgentText); // plain answer, no surface change
+                return;
+            }
             if (reply.A2uiMessages is not { } messages)
             {
                 System.Diagnostics.Debug.WriteLine("[A2UI] no a2uiEnvelope in response");
