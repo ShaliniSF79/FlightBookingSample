@@ -17,7 +17,7 @@
 - [x] T7 `BookingSession` (trip memory, history ≤ 8, Book-now instruction, stage-3 intent, noise/busy filter)
 - [x] T8 `AgentClient` (A2A `message/send`, response parse)
 - [x] T9 `ContextResolver` (`{path}` resolution, ISO dates, `selectedRow` JSON string → object)
-- [x] T10 25 unit tests incl. the real agent design JSON
+- [x] T10 28 unit tests incl. the real agent design JSON and the A2A request shape
 
 ## Agent
 - [x] T11 `designs_maui/stage1-flight-search.json`
