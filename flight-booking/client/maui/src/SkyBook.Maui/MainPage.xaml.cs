@@ -129,13 +129,16 @@ public partial class MainPage : ContentPage
         ChatPane.IsVisible = welcome || !_compact || _tab == Tab.Chat;
         MobileTabs.IsVisible = !welcome && _compact;
 
-        ChatColumn.Width = welcome || _compact ? GridLength.Star : new GridLength(380);
+        ChatColumn.Width = welcome || _compact ? GridLength.Star : new GridLength(420);
         SurfaceColumn.Width = welcome || _compact ? new GridLength(0) : GridLength.Star;
+        ChatPane.MinimumWidthRequest = welcome || _compact ? 0 : 420;
 
         foreach (var b in _placeholderButtons) b.IsEnabled = !_busy;
         WelcomeSendButton.IsEnabled = !_busy && !string.IsNullOrWhiteSpace(WelcomeEditor.Text);
         ClearButton.IsEnabled = _chat.AssistItems.Count > 0;
         SurfaceLoading.IsVisible = SurfaceLoading.IsRunning = _busy;
+        Assist.Margin = new Thickness(0);
+        WelcomeScroll.Padding = _compact ? new Thickness(16) : new Thickness(24);
 
         var active = _tab == Tab.Chat;
         ChatTabButton.BackgroundColor = active ? Color.FromArgb("#2563eb") : Colors.White;
@@ -310,14 +313,12 @@ public partial class MainPage : ContentPage
         catch (HttpRequestException ex)
         {
             System.Diagnostics.Debug.WriteLine($"[A2UI] agent unreachable: {ex}");
-            _chat.AddBotMessage(
-                $"I can't reach the SkyBook agent at {AppConfig.AgentUrl}. Start it first " +
-                "(cd flight-booking/agent, set FLIGHT_BOOKING_CLIENT=maui, then run `flight-booking`), then try again.");
+            AddOfflineResponse(text);
         }
         catch (TaskCanceledException ex)
         {
             System.Diagnostics.Debug.WriteLine($"[A2UI] agent timeout: {ex}");
-            _chat.AddBotMessage("The SkyBook agent took too long to respond. Please try again.");
+            AddOfflineResponse(text);
         }
         catch (Exception ex)
         {
@@ -330,5 +331,19 @@ public partial class MainPage : ContentPage
             _busy = false;
             ApplyState();
         }
+    }
+
+    private void AddOfflineResponse(string text)
+    {
+        var reply = text.ToLowerInvariant() switch
+        {
+            var t when t.Contains("book") || t.Contains("confirm") =>
+                "I can’t reach the live booking agent right now, but the booking flow is ready. Once the agent is running, I’ll show the confirmation screen here.",
+            var t when t.Contains("search") || t.Contains("flight") =>
+                "I can’t reach the live booking agent right now, but the search flow is ready. Once the agent is running, I’ll show live flight results here.",
+            _ =>
+                "I can’t reach the live booking agent right now. Start the agent and try again, and I’ll respond with live flight-booking results."
+        };
+        _chat.AddBotMessage(reply);
     }
 }
