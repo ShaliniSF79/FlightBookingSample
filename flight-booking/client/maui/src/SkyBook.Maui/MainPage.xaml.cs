@@ -313,12 +313,12 @@ public partial class MainPage : ContentPage
         catch (HttpRequestException ex)
         {
             System.Diagnostics.Debug.WriteLine($"[A2UI] agent unreachable: {ex}");
-            AddOfflineResponse(text);
+            await ShowBundledStageAsync(text);
         }
         catch (TaskCanceledException ex)
         {
             System.Diagnostics.Debug.WriteLine($"[A2UI] agent timeout: {ex}");
-            AddOfflineResponse(text);
+            await ShowBundledStageAsync(text);
         }
         catch (Exception ex)
         {
@@ -333,17 +333,41 @@ public partial class MainPage : ContentPage
         }
     }
 
-    private void AddOfflineResponse(string text)
+    /// <summary>
+    /// Agent unreachable: open the matching stage page from the bundled design (same JSON the agent serves),
+    /// so Search / Results / Confirmation still open. Free-text requests that need the AI get a hint instead.
+    /// </summary>
+    private async Task ShowBundledStageAsync(string text)
     {
-        var reply = text.ToLowerInvariant() switch
+        var lower = text.ToLowerInvariant();
+        string? file = null; string say = "";
+        if (lower.Contains("selectflightandproceed") || lower.Contains("booking and confirmation") || lower.Contains("confirmation page"))
+        { file = "stage3-booking-confirmation.json"; say = "Here is the booking confirmation page."; }
+        else if (lower.Contains("searchflights") || lower.Contains("flight results"))
+        { file = "stage2-flight-results.json"; say = "Here are the flight results. Tap a flight row, then press Book now."; }
+        else if (lower.Contains("flight search form"))
+        { file = "stage1-flight-search.json"; say = "Here is the flight search form. Fill in your trip and press Search Flights."; }
+
+        if (file is null)
         {
-            var t when t.Contains("book") || t.Contains("confirm") =>
-                "I can’t reach the live booking agent right now, but the booking flow is ready. Once the agent is running, I’ll show the confirmation screen here.",
-            var t when t.Contains("search") || t.Contains("flight") =>
-                "I can’t reach the live booking agent right now, but the search flow is ready. Once the agent is running, I’ll show live flight results here.",
-            _ =>
-                "I can’t reach the live booking agent right now. Start the agent and try again, and I’ll respond with live flight-booking results."
-        };
-        _chat.AddBotMessage(reply);
+            _chat.AddBotMessage($"I can't reach the SkyBook agent at {AppConfig.AgentUrl}, so I can't answer free-text requests yet. " +
+                                "Start the agent (or harness/mock_agent.py) and try again, or pick a step from the workspace.");
+            return;
+        }
+
+        try
+        {
+            using var stream = await FileSystem.OpenAppPackageFileAsync("designs/" + file);
+            using var reader = new StreamReader(stream);
+            var messages = System.Text.Json.Nodes.JsonNode.Parse(await reader.ReadToEndAsync())!.AsArray();
+            ResetSurfaces();
+            _host.ProcessJson(EnvelopeSanitizer.Sanitize(messages).ToJsonString());
+            _chat.AddBotMessage(say + " (offline preview - start the agent for live AI replies)");
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[A2UI] bundled stage failed: {ex}");
+            _chat.AddBotMessage($"I couldn't open that page: {ex.Message}");
+        }
     }
 }

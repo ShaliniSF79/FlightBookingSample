@@ -58,25 +58,11 @@ public sealed class BookingSession
     /// <summary>Port of the outgoing-text assembly in <c>sendToAgent</c>. Call after <see cref="RecordUserPrompt"/>.</summary>
     public string BuildOutgoingText(string text, bool silent)
     {
-        var normalized = text.Trim();
-        var lower = normalized.ToLowerInvariant();
-
-        var searchIntent = !silent && (lower.Contains("search") || lower.Contains("find flights") || lower.Contains("fill details"));
-        var resultsIntent = !silent && (lower.Contains("results") || lower.Contains("show flights") || lower.Contains("show me the flight results page"));
-        var bookIntent = !silent && (normalized == Stage.All[2].StarterPrompt || lower.Contains("book now") || lower.Contains("confirm"));
-
-        var prompt = normalized;
-        if (searchIntent)
-            prompt = $"Show me the flight search form. {normalized}\n\nFill all details on your own and find the flights.";
-        else if (resultsIntent)
-            prompt = $"Show me the flight results page. {normalized}";
-        else if (bookIntent)
-            prompt = $"Show the booking confirmation page (stage 3). {normalized}";
-
+        var bookIntent = !silent && text == Stage.All[2].StarterPrompt ? "Show the booking confirmation page (stage 3). " : "";
         var withInputs = HasTripInputs
-            ? $"{prompt}\n\nContext from the user's earlier inputs (use these, do not invent passenger or trip details): {_trip.ToJsonString()}"
-            : prompt;
-        var basis = silent ? normalized : withInputs;
+            ? $"{text}\n\nContext from the user's earlier inputs (use these, do not invent passenger or trip details): {_trip.ToJsonString()}"
+            : text;
+        var basis = silent ? text : bookIntent + withInputs;
 
         // The current request is already the last entry; send up to 8 earlier ones, oldest first.
         var earlier = _userPrompts.Take(Math.Max(0, _userPrompts.Count - 1)).TakeLast(8).ToList();
