@@ -46,3 +46,9 @@
 - [ ] T30 Add Syncfusion license key via CI secret (never commit)
 - [ ] T31 UI automation using the `AutomationId`s (stage-*, welcome-input, welcome-send, home, clear, assist)
 - [x] T32 Automated: `tests/SkyBook.Designs.Tests` loads every designs_maui file into the real `SurfaceHost` (6 tests)
+
+### Notes on T25 / T26 (attempted from the Linux sandbox)
+Not buildable off-platform: WinUI (`net10.0-windows10.0.19041.0`) needs Windows; iOS / Mac Catalyst need macOS + Xcode.
+On a Windows host: `dotnet build src/SkyBook.Maui -f net10.0-windows10.0.19041.0`.
+On a Mac: `dotnet workload install maui` then `dotnet build src/SkyBook.Maui -f net10.0-maccatalyst` (and `-f net10.0-ios`).
+Project file already declares these targets conditionally (see `SkyBook.Maui.csproj`).
