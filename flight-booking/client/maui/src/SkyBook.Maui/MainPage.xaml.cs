@@ -3,6 +3,7 @@ using Microsoft.Maui.Controls.Shapes;
 using SkyBook.Core;
 using Syncfusion.A2UI.Core.Schema;
 using Syncfusion.A2UI.Core.State;
+using Syncfusion.Maui.AIAssistView;
 using Syncfusion.Maui.A2UI.Hosting;
 
 namespace SkyBook.Maui;
@@ -45,7 +46,9 @@ public partial class MainPage : ContentPage
         _host.SurfaceUpdated += (_, s) => MainThread.BeginInvokeOnMainThread(() => { if (_surface?.Id == s.Id) UpdateStep(); });
         _host.SurfaceDeleted += (_, id) => MainThread.BeginInvokeOnMainThread(() => { if (_surface?.Id == id) SetSurface(null); });
         _host.ActionDispatched += (_, a) => MainThread.BeginInvokeOnMainThread(() => OnSurfaceAction(a));
+        Ui.SkyHost.BookRequested += row => MainThread.BeginInvokeOnMainThread(() => OnBookRow(row));
 
+        StyleChat();
         BuildJourney();
         BuildStageCards();
         BuildStepper();
@@ -58,21 +61,30 @@ public partial class MainPage : ContentPage
 
     private void BuildJourney()
     {
-        foreach (var s in Stage.All)
+        for (var i = 0; i < Stage.All.Count; i++)
+        {
+            var s = Stage.All[i];
             JourneyRow.Add(new HorizontalStackLayout
             {
-                Spacing = 6,
+                Spacing = 8, VerticalOptions = LayoutOptions.Center,
                 Children =
                 {
                     new Border
                     {
-                        WidthRequest = 22, HeightRequest = 22, StrokeThickness = 0, BackgroundColor = Color.FromArgb("#2563eb"),
-                        StrokeShape = new RoundRectangle { CornerRadius = 11 },
-                        Content = new Label { Text = s.Step.ToString(), FontSize = 11, FontAttributes = FontAttributes.Bold, TextColor = Colors.White, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center },
+                        WidthRequest = 26, HeightRequest = 26, StrokeThickness = 0, BackgroundColor = Color.FromArgb("#2563eb"),
+                        StrokeShape = new RoundRectangle { CornerRadius = 13 },
+                        Content = new Label { Text = s.Step.ToString(), FontSize = 12, FontAttributes = FontAttributes.Bold, TextColor = Colors.White, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center },
                     },
-                    new Label { Text = s.ShortLabel, FontSize = 12, TextColor = Color.FromArgb("#475569"), VerticalOptions = LayoutOptions.Center },
+                    new Label { Text = s.ShortLabel, FontSize = 13, FontAttributes = FontAttributes.Bold, TextColor = Color.FromArgb("#1e293b"), VerticalOptions = LayoutOptions.Center },
                 },
             });
+            if (i < Stage.All.Count - 1)
+                JourneyRow.Add(new BoxView
+                {
+                    WidthRequest = 56, HeightRequest = 2, VerticalOptions = LayoutOptions.Center, CornerRadius = 1,
+                    Background = new LinearGradientBrush([new GradientStop(Color.FromArgb("#2563eb"), 0), new GradientStop(Color.FromArgb("#22ad78"), 1)], new Point(0, 0), new Point(1, 0)),
+                });
+        }
     }
 
     private void BuildStageCards()
@@ -85,15 +97,74 @@ public partial class MainPage : ContentPage
         }
     }
 
+    private readonly List<BoxView> _stepLines = [];
+
+    /// <summary>React look: blue user bubbles (right), white bot bubbles with a round avatar (left), time under each message.</summary>
+    private void StyleChat()
+    {
+        Assist.RequestItemTemplate = new DataTemplate(() => Bubble(user: true));
+        Assist.ResponseItemTemplate = new DataTemplate(() => Bubble(user: false));
+        Assist.RequestEditor.Placeholder = "Message SkyBook…";
+    }
+
+    private static Microsoft.Maui.Controls.View Bubble(bool user)
+    {
+        var text = new Label { FontSize = 14, LineBreakMode = LineBreakMode.WordWrap, TextColor = user ? Colors.White : Color.FromArgb("#0f172a") };
+        text.SetBinding(Label.TextProperty, "Text");
+        var time = new Label { FontSize = 11, TextColor = Color.FromArgb("#94a3b8"), HorizontalOptions = user ? LayoutOptions.End : LayoutOptions.Start };
+        time.SetBinding(Label.TextProperty, new Binding("DateTime", stringFormat: "{0:hh:mm tt}"));
+
+        var bubble = new Border
+        {
+            Padding = new Thickness(14, 10), StrokeThickness = user ? 0 : 1,
+            Stroke = Color.FromArgb("#e2e8f0"),
+            Background = user
+                ? new LinearGradientBrush([new GradientStop(Color.FromArgb("#2563eb"), 0), new GradientStop(Color.FromArgb("#1d4ed8"), 1)], new Point(0, 0), new Point(1, 1))
+                : new SolidColorBrush(Colors.White),
+            StrokeShape = new RoundRectangle { CornerRadius = user ? new CornerRadius(16, 16, 4, 16) : new CornerRadius(16, 16, 16, 4) },
+            Content = text,
+        };
+        var column = new VerticalStackLayout { Spacing = 3, Children = { bubble, time }, MaximumWidthRequest = 300 };
+
+        if (user)
+        {
+            column.HorizontalOptions = LayoutOptions.End;
+            return new Grid { Padding = new Thickness(12, 6), Children = { column } };
+        }
+
+        var avatar = new Border
+        {
+            WidthRequest = 28, HeightRequest = 28, StrokeThickness = 0, VerticalOptions = LayoutOptions.End,
+            StrokeShape = new RoundRectangle { CornerRadius = 14 },
+            Background = new LinearGradientBrush([new GradientStop(Color.FromArgb("#2563eb"), 0), new GradientStop(Color.FromArgb("#22ad78"), 1)], new Point(0, 0), new Point(1, 1)),
+            Content = new Label { Text = "✦", FontSize = 13, TextColor = Colors.White, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center },
+        };
+        return new HorizontalStackLayout { Spacing = 8, Padding = new Thickness(12, 6), Children = { avatar, column } };
+    }
+
     private void BuildStepper()
     {
-        foreach (var s in Stage.All)
+        // React: dot + label, joined by a 2px line that turns green once the step is done.
+        var n = Stage.All.Count;
+        for (var i = 0; i < n; i++)
         {
+            var s = Stage.All[i];
             var dot = new Label { Text = s.Step.ToString(), FontSize = 12, FontAttributes = FontAttributes.Bold, HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center, WidthRequest = 26, HeightRequest = 26 };
-            var label = new Label { Text = s.StepperLabel, FontSize = 12, VerticalOptions = LayoutOptions.Center };
-            var host = new Border { StrokeThickness = 0, StrokeShape = new RoundRectangle { CornerRadius = 13 }, Content = dot };
-            Stepper.Add(new HorizontalStackLayout { Spacing = 6, Children = { host, label } });
-            _stepper.Add((host, dot, label));
+            var label = new Label { Text = s.StepperLabel, FontSize = 13, FontAttributes = FontAttributes.Bold, VerticalOptions = LayoutOptions.Center };
+            var chip = new Border { StrokeThickness = 0, StrokeShape = new RoundRectangle { CornerRadius = 13 }, Content = dot, VerticalOptions = LayoutOptions.Center };
+            var item = new HorizontalStackLayout { Spacing = 8, VerticalOptions = LayoutOptions.Center, Children = { chip, label } };
+
+            Stepper.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
+            Stepper.Add(item, Stepper.ColumnDefinitions.Count - 1, 0);
+            _stepper.Add((chip, dot, label));
+
+            if (i < n - 1)
+            {
+                var line = new BoxView { HeightRequest = 2, Margin = new Thickness(12, 0), VerticalOptions = LayoutOptions.Center, Color = Color.FromArgb("#e2e8f0"), CornerRadius = 1 };
+                Stepper.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
+                Stepper.Add(line, Stepper.ColumnDefinitions.Count - 1, 0);
+                _stepLines.Add(line);
+            }
         }
     }
 
@@ -160,6 +231,7 @@ public partial class MainPage : ContentPage
         var cardWidth = _compact ? available - 16 : (available - 6 * 8) / 3;
         foreach (var c in _stageCards) c.WidthRequest = Math.Max(240, cardWidth);
         Body.Padding = _compact ? new Thickness(12) : new Thickness(24, 20, 24, 24);
+        SurfaceView.MinimumWidthRequest = 0;
     }
 
     private int CurrentStep() =>
@@ -177,10 +249,12 @@ public partial class MainPage : ContentPage
             var bg = current ? Color.FromArgb("#2563eb") : done ? Color.FromArgb("#14a37f") : Color.FromArgb("#e2e8f0");
             chip.BackgroundColor = bg;
             dot.Text = done ? "✓" : n.ToString();
+            chip.BackgroundColor = current ? Color.FromArgb("#2563eb") : done ? Color.FromArgb("#14a37f") : Color.FromArgb("#e2e8f0");
             dot.TextColor = current || done ? Colors.White : Color.FromArgb("#64748b");
             label.TextColor = current ? Color.FromArgb("#0f172a") : Color.FromArgb("#64748b");
             label.FontAttributes = current ? FontAttributes.Bold : FontAttributes.None;
             label.IsVisible = !_compact || current; // React: .step-label hidden on narrow screens unless current
+            if (i < _stepLines.Count) _stepLines[i].Color = step > n ? Color.FromArgb("#14a37f") : Color.FromArgb("#e2e8f0");
         }
 
         var shown = step > 0 ? Stage.All[step - 1] : _activeStage;
@@ -256,6 +330,20 @@ public partial class MainPage : ContentPage
         var prompt = _session.BuildActionPrompt(action.Name, ctx, _busy);
         if (prompt is null) return;
         // The summary is shown as the user's chat prompt; the agent receives the detailed payload.
+        _ = SubmitPromptAsync(prompt.ChatText, prompt.AgentPayload, alreadyShown: false);
+    }
+
+    /// <summary>React: each flight row has its own "Book now" button; pressing it books exactly that row.</summary>
+    private void OnBookRow(IDictionary<string, object> row)
+    {
+        var selected = new JsonObject();
+        foreach (var (k, v) in row)
+            if (v is null or string or bool or int or long or double or float)
+                selected[k] = v is null ? null : JsonValue.Create(v);
+        selected.Remove("action");
+        var context = new JsonObject { ["selectedRow"] = selected, ["activeStep"] = 1, ["nextStep"] = 2 };
+        var prompt = _session.BuildActionPrompt("selectFlightAndProceed", context, _busy);
+        if (prompt is null) return;
         _ = SubmitPromptAsync(prompt.ChatText, prompt.AgentPayload, alreadyShown: false);
     }
 

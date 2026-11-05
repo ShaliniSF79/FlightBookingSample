@@ -15,4 +15,5 @@
     <Content Include="..\..\..\..\agent\flight_booking_agent\designs_maui\*.json" Link="designs_maui\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <ItemGroup><ProjectReference Include="..\..\src\SkyBook.Core\SkyBook.Core.csproj" /></ItemGroup>
+  <ItemGroup><Compile Include="..\..\src\SkyBook.Maui\Ui\*.cs" LinkBase="Ui" /></ItemGroup>
 </Project>

@@ -56,3 +56,6 @@ Project file already declares these targets conditionally (see `SkyBook.Maui.csp
 - [x] T33 Font switched from Open Sans to Roboto (Regular/Medium/Bold bundled)
 - [x] T34 Friendly 'agent unreachable' chat message; AgentClient sends fixed Content-Length; `harness/mock_agent.py` offline agent
 - [x] T35 In-app `LocalAgent` (C#, optional Azure OpenAI) replaces the need for the Python agent; `SKYBOOK_AGENT_URL` still selects the remote agent
+- [x] T36 UI parity pass against the React screenshots: custom A2UI renderers (`src/SkyBook.Maui/Ui`) for Column gap/padding, Row as an equal-width grid (stacks when narrow), React type scale, coloured title bar; flight grid styled like React with a real "Book now" button per row; stepper with connector lines; chat bubbles (blue user / white bot with avatar + time); home page journey connectors, gradient card tops, tinted "Ask SkyBook" panel
+- [x] T37 Agent designs_maui rebuilt as Title bar + cards (Trip Summary / Available Flights / Booking Details / Passenger Information); offline "fill details on your own" prefill; Book click chat text matches React ("Book JL 001 (SFO → HND) at 3200.")
+- [x] T38 `UiRenderTests` builds the real view tree for all three pages (10 design/UI tests, 38 core tests)

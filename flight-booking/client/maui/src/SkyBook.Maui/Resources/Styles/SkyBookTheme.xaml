@@ -25,6 +25,11 @@
         <GradientStop Color="#eef1f6" Offset="1" />
     </LinearGradientBrush>
 
+    <LinearGradientBrush x:Key="AskPanelGradient" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#f5f8ff" Offset="0" />
+        <GradientStop Color="#f0fdf9" Offset="1" />
+    </LinearGradientBrush>
+
     <Style x:Key="PanelBorder" TargetType="Border">
         <Setter Property="BackgroundColor" Value="{StaticResource CSurface}" />
         <Setter Property="Stroke" Value="{StaticResource CLine}" />

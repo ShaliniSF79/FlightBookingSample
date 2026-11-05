@@ -170,6 +170,14 @@ public sealed class LocalAgent(Func<string, Task<string>> loadDesign, HttpClient
             return await ConfirmationAsync(trip.MissingForBooking().Count == 0 ? trip : SampleTrip(withTraveller: true), SampleFlight(),
                 "Here is the booking confirmation page.");
 
+        // Offline: "fill details on your own" prefills the form with a sample trip, like the React demo.
+        if (ai is null && Regex.IsMatch(lower, @"on your own|yourself|any details|sample details|fill (all|the|in)"))
+        {
+            var filled = SampleFill(trip);
+            const string said = "I have prefilled the search form with sample travel details. Review them and press Search Flights.";
+            return (await SearchPageAsync(filled, said), said);
+        }
+
         if (ai is null)
         {
             const string noAi = "I can open the Search, Results and Confirmation pages, but to understand free-text requests I need Azure OpenAI configured " +
@@ -358,6 +366,19 @@ public sealed class LocalAgent(Func<string, Task<string>> loadDesign, HttpClient
         if (m.Success) return m.Groups[1].Value.ToUpperInvariant();
         var letters = new string(place.Where(char.IsLetter).ToArray());
         return letters.Length >= 3 ? letters[..3].ToUpperInvariant() : "---";
+    }
+
+    /// <summary>Keeps whatever the user already entered and fills every missing field with a plausible sample.</summary>
+    private static Trip SampleFill(Trip t)
+    {
+        var s = SampleTrip(withTraveller: true);
+        s.From = "San Francisco (SFO)"; s.To = "Tokyo (HND)";
+        s.DepartureDate = DateTime.Today.AddDays(30).ToString("yyyy-MM-dd");
+        s.ReturnDate = DateTime.Today.AddDays(40).ToString("yyyy-MM-dd");
+        s.Adults = 1; s.Children = 0; s.CabinClass = "business";
+        s.FirstName = "Hiroshi"; s.LastName = "Tanaka"; s.Email = "h.tanaka@example.jp"; s.PassportNumber = "TK9988776"; s.Nationality = "IN";
+        s.Overlay(t);
+        return s;
     }
 
     private static Trip SampleTrip(bool withTraveller = false) => new()

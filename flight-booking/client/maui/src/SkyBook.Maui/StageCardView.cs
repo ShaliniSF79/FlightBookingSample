@@ -57,7 +57,7 @@ public sealed class StageCardView : Border
                 },
             });
 
-        Content = new VerticalStackLayout
+        var inner = new VerticalStackLayout
         {
             Spacing = 8,
             Children =
@@ -70,6 +70,18 @@ public sealed class StageCardView : Border
                 new Label { Text = $"{stage.Cta} →", FontSize = 13, FontAttributes = FontAttributes.Bold, TextColor = Color.FromArgb("#2563eb"), Margin = new Thickness(0, 6, 0, 0) },
             },
         };
+        // React: 3px brand-gradient strip along the top edge of each card.
+        Content = new Grid
+        {
+            RowDefinitions = [new(GridLength.Auto), new(GridLength.Star)],
+            RowSpacing = 0,
+            Children =
+            {
+                new BoxView { HeightRequest = 3, Margin = new Thickness(-20, -18, -20, 14), VerticalOptions = LayoutOptions.Start,
+                    Background = new LinearGradientBrush([new GradientStop(Color.FromArgb("#2563eb"), 0), new GradientStop(Color.FromArgb("#22ad78"), 1)], new Point(0, 0), new Point(1, 0)) },
+            },
+        };
+        ((Grid)Content).Add(inner, 0, 1);
         var tap = new TapGestureRecognizer();
         tap.Tapped += (_, _) => onOpen(stage);
         GestureRecognizers.Add(tap);
