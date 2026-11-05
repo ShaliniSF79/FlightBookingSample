@@ -22,8 +22,9 @@ public static class MauiProgram
             .UseA2UIWithSyncfusionComponents(CatalogId)
             .ConfigureFonts(fonts =>
             {
-                fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-                fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                fonts.AddFont("Roboto-Regular.ttf", "RobotoRegular");
+                fonts.AddFont("Roboto-Medium.ttf", "RobotoMedium");
+                fonts.AddFont("Roboto-Bold.ttf", "RobotoBold");
             });
 
         builder.Services.AddSingleton(_ => new HttpClient { Timeout = TimeSpan.FromMinutes(3) });

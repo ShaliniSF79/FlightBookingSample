@@ -133,10 +133,10 @@ public class AgentClientSendTests
 {
     private sealed class Capture(string reply) : HttpMessageHandler
     {
-        public string? Body; public Uri? Url;
+        public string? Body; public Uri? Url; public long? Length;
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage r, CancellationToken ct)
         {
-            Url = r.RequestUri; Body = await r.Content!.ReadAsStringAsync(ct);
+            Url = r.RequestUri; Length = r.Content!.Headers.ContentLength; Body = await r.Content!.ReadAsStringAsync(ct);
             return new HttpResponseMessage { Content = new StringContent(reply) };
         }
     }
@@ -148,6 +148,7 @@ public class AgentClientSendTests
         var reply = await new AgentClient(new HttpClient(h), AgentClient.DefaultUrl).SendAsync("hello", "c1");
         var body = System.Text.Json.Nodes.JsonNode.Parse(h.Body!)!;
         Assert.Equal("http://localhost:10006/", h.Url!.ToString());
+        Assert.NotNull(h.Length); // fixed Content-Length, not chunked
         Assert.Equal("2.0", (string)body["jsonrpc"]!);
         Assert.Equal("message/send", (string)body["method"]!);
         Assert.Equal("hello", (string)body["params"]!["message"]!["parts"]![0]!["text"]!);

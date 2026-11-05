@@ -307,6 +307,18 @@ public partial class MainPage : ContentPage
             var answer = explanation.Length > 0 ? explanation : reply.AgentText;
             _chat.AddBotMessage(answer.Length > 0 ? answer : "Updated the booking view.");
         }
+        catch (HttpRequestException ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[A2UI] agent unreachable: {ex}");
+            _chat.AddBotMessage(
+                $"I can't reach the SkyBook agent at {AppConfig.AgentUrl}. Start it first " +
+                "(cd flight-booking/agent, set FLIGHT_BOOKING_CLIENT=maui, then run `flight-booking`), then try again.");
+        }
+        catch (TaskCanceledException ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[A2UI] agent timeout: {ex}");
+            _chat.AddBotMessage("The SkyBook agent took too long to respond. Please try again.");
+        }
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"[A2UI] fetch error: {ex}");

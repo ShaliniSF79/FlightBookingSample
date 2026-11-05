@@ -1,4 +1,3 @@
-using System.Net.Http.Json;
 using System.Text.Json.Nodes;
 
 namespace SkyBook.Core;
@@ -29,7 +28,9 @@ public sealed class AgentClient(HttpClient http, Uri agentUrl)
             ["params"] = new JsonObject { ["message"] = message },
         };
 
-        using var res = await http.PostAsJsonAsync(agentUrl, body, ct);
+        // Buffered string content => Content-Length is sent (no chunked encoding), which every A2A server accepts.
+        using var content = new StringContent(body.ToJsonString(), System.Text.Encoding.UTF8, "application/json");
+        using var res = await http.PostAsync(agentUrl, content, ct);
         return Parse(JsonNode.Parse(await res.Content.ReadAsStringAsync(ct)));
     }
 

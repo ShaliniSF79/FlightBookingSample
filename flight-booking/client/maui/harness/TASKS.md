@@ -52,3 +52,6 @@ Not buildable off-platform: WinUI (`net10.0-windows10.0.19041.0`) needs Windows;
 On a Windows host: `dotnet build src/SkyBook.Maui -f net10.0-windows10.0.19041.0`.
 On a Mac: `dotnet workload install maui` then `dotnet build src/SkyBook.Maui -f net10.0-maccatalyst` (and `-f net10.0-ios`).
 Project file already declares these targets conditionally (see `SkyBook.Maui.csproj`).
+
+- [x] T33 Font switched from Open Sans to Roboto (Regular/Medium/Bold bundled)
+- [x] T34 Friendly 'agent unreachable' chat message; AgentClient sends fixed Content-Length; `harness/mock_agent.py` offline agent
