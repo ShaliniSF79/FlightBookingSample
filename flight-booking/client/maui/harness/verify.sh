@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Verifies the MAUI migration: unit tests, design JSON validity, and an Android (net10.0) build.
+# Verifies the MAUI migration: unit tests, designs loaded into the real SurfaceHost, and an Android (net10.0) build.
 # Usage: harness/verify.sh [--no-android]
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -9,6 +9,9 @@ echo "== SDK =="; dotnet --version
 
 echo "== Unit tests (SkyBook.Core) =="
 dotnet test tests/SkyBook.Core.Tests --nologo
+
+echo "== MAUI designs load into Syncfusion.Maui.A2UI SurfaceHost =="
+dotnet test tests/SkyBook.Designs.Tests --nologo
 
 echo "== Agent designs are valid JSON =="
 for f in ../../agent/flight_booking_agent/designs_maui/*.json; do python3 -m json.tool "$f" >/dev/null && echo "ok $(basename "$f")"; done

@@ -45,4 +45,4 @@
 - [ ] T29 Tune grid/card visuals against React screenshots
 - [ ] T30 Add Syncfusion license key via CI secret (never commit)
 - [ ] T31 UI automation using the `AutomationId`s (stage-*, welcome-input, welcome-send, home, clear, assist)
-- [ ] T32 Automate "load every designs_maui file into SurfaceHost" as a device-free test (needs a MAUI-free host or net10.0 test with MAUI refs)
+- [x] T32 Automated: `tests/SkyBook.Designs.Tests` loads every designs_maui file into the real `SurfaceHost` (6 tests)

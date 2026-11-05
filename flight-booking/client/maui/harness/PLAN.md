@@ -42,7 +42,7 @@ Status legend: ✅ done & verified · 🟡 done, needs on-device verification ·
 | Linux CI cannot build iOS/Win/Mac | Partial verification | `verify.sh` builds Android + runs tests; others on their hosts |
 
 ## 5. Verification strategy
-1. `harness/verify.sh` — xUnit, JSON validity of `designs_maui`, Android build (warnings as errors). Loading the designs into the real `SurfaceHost` was verified once with a throwaway probe (T14); automating it is T32.
+1. `harness/verify.sh` — xUnit, `designs_maui` loaded into the real `SurfaceHost` (SkyBook.Designs.Tests), JSON validity, Android build (warnings as errors).
 2. Parity unit tests assert React-exact strings.
 3. Manual E2E per §6.
 
