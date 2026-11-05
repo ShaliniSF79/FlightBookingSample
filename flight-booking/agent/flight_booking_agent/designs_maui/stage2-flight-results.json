@@ -1,0 +1,402 @@
+[
+  {
+    "version": "v0.9",
+    "createSurface": {
+      "surfaceId": "workspace",
+      "catalogId": "syncfusion-maui"
+    }
+  },
+  {
+    "version": "v0.9",
+    "updateComponents": {
+      "surfaceId": "workspace",
+      "components": [
+        {
+          "id": "root",
+          "component": "Column",
+          "gap": 16,
+          "children": [
+            "title",
+            "summaryCard",
+            "resultsCard"
+          ],
+          "padding": 24
+        },
+        {
+          "id": "title",
+          "component": "Text",
+          "text": "Flight Results",
+          "variant": "h2"
+        },
+        {
+          "id": "summaryCard",
+          "component": "SyncfusionCardView",
+          "content": "summaryText",
+          "cornerRadius": 16,
+          "borderWidth": 1,
+          "borderColor": "#e2e8f0"
+        },
+        {
+          "id": "summaryText",
+          "component": "Text",
+          "text": {
+            "path": "/summaryText"
+          }
+        },
+        {
+          "id": "resultsCard",
+          "component": "SyncfusionCardView",
+          "content": "resultsCol",
+          "cornerRadius": 16,
+          "borderWidth": 1,
+          "borderColor": "#e2e8f0"
+        },
+        {
+          "id": "resultsCol",
+          "component": "Column",
+          "gap": 8,
+          "children": [
+            "flightsGrid",
+            "hint",
+            "bookBtn"
+          ]
+        },
+        {
+          "id": "hint",
+          "component": "Text",
+          "text": "Tap a flight row, then press Book now.",
+          "variant": "caption"
+        },
+        {
+          "id": "bookBtn",
+          "component": "SyncfusionButton",
+          "text": "Book now →",
+          "background": "#2563eb",
+          "textColor": "#ffffff",
+          "cornerRadius": 12,
+          "fontAttributes": "Bold",
+          "onClick": {
+            "event": {
+              "name": "selectFlightAndProceed",
+              "context": {
+                "selectedRow": {
+                  "path": "/selectedFlight"
+                },
+                "stage1": {
+                  "path": "/stage1"
+                },
+                "passengers": {
+                  "path": "/stage1/passengers"
+                },
+                "results": {
+                  "path": "/filteredFlights"
+                },
+                "activeStep": 1,
+                "nextStep": 2
+              }
+            }
+          }
+        },
+        {
+          "id": "flightsGrid",
+          "component": "SyncfusionDataGrid",
+          "dataSource": {
+            "path": "/filteredFlights"
+          },
+          "columns": [
+            {
+              "field": "airline",
+              "headerText": "Airline",
+              "width": 140.0
+            },
+            {
+              "field": "flight",
+              "headerText": "Flight",
+              "width": 110.0
+            },
+            {
+              "field": "departure",
+              "headerText": "Departure",
+              "width": 150.0
+            },
+            {
+              "field": "arrival",
+              "headerText": "Arrival",
+              "width": 150.0
+            },
+            {
+              "field": "duration",
+              "headerText": "Duration",
+              "width": 110.0
+            },
+            {
+              "field": "stops",
+              "headerText": "Stops",
+              "width": 100.0
+            },
+            {
+              "field": "baggage",
+              "headerText": "Baggage",
+              "width": 120.0
+            },
+            {
+              "field": "rating",
+              "headerText": "Rating",
+              "width": 90.0,
+              "textAlign": "end"
+            },
+            {
+              "field": "price",
+              "headerText": "Price",
+              "width": 110.0,
+              "textAlign": "end",
+              "format": "C0"
+            },
+            {
+              "field": "action",
+              "headerText": "Book now",
+              "width": 130.0
+            }
+          ],
+          "sortingMode": "single",
+          "selectionMode": "single",
+          "onRowClick": {
+            "event": {
+              "name": "select",
+              "context": {}
+            }
+          },
+          "selectedRowJson": {
+            "path": "/selectedFlight"
+          },
+          "height": 360
+        }
+      ]
+    }
+  },
+  {
+    "version": "v0.9",
+    "updateDataModel": {
+      "surfaceId": "workspace",
+      "path": "/stage1",
+      "value": {
+        "tripType": "Round Trip",
+        "from": "New York (JFK)",
+        "to": "London (LHR)",
+        "departureDate": "2026-09-14",
+        "returnDate": "2026-09-23",
+        "cabinClass": "Business",
+        "passengers": {
+          "adults": 2,
+          "children": 1,
+          "infants": 0
+        },
+        "preferredAirline": "Any",
+        "nonstopOnly": false
+      }
+    }
+  },
+  {
+    "version": "v0.9",
+    "updateDataModel": {
+      "surfaceId": "workspace",
+      "path": "/summaryText",
+      "value": "Round Trip • New York (JFK) → London (LHR)\nDeparture: 2026-09-14 • Return: 2026-09-23\nCabin: Business • Adults: 2 • Children: 1 • Infants: 0\nPreferred Airline: Any • Non-stop Only: No"
+    }
+  },
+  {
+    "version": "v0.9",
+    "updateDataModel": {
+      "surfaceId": "workspace",
+      "path": "/allFlights",
+      "value": [
+        {
+          "id": 1,
+          "airline": "SkyJet Airways",
+          "flight": "SJ 201",
+          "departure": "08:15 JFK",
+          "arrival": "20:05 LHR",
+          "duration": "6h 50m",
+          "stops": "Non-stop",
+          "baggage": "2 x 23kg",
+          "rating": 4.8,
+          "price": 1840,
+          "action": "Select →"
+        },
+        {
+          "id": 2,
+          "airline": "Nimbus Air",
+          "flight": "NB 440",
+          "departure": "09:40 JFK",
+          "arrival": "22:10 LHR",
+          "duration": "7h 30m",
+          "stops": "1 Stop",
+          "baggage": "2 x 23kg",
+          "rating": 4.5,
+          "price": 1495,
+          "action": "Select →"
+        },
+        {
+          "id": 3,
+          "airline": "AeroVista",
+          "flight": "AV 118",
+          "departure": "11:20 JFK",
+          "arrival": "23:45 LHR",
+          "duration": "6h 25m",
+          "stops": "Non-stop",
+          "baggage": "1 x 23kg",
+          "rating": 4.7,
+          "price": 1990,
+          "action": "Select →"
+        },
+        {
+          "id": 4,
+          "airline": "BlueOrbit",
+          "flight": "BO 772",
+          "departure": "14:05 JFK",
+          "arrival": "03:15 LHR",
+          "duration": "7h 10m",
+          "stops": "1 Stop",
+          "baggage": "2 x 23kg",
+          "rating": 4.3,
+          "price": 1320,
+          "action": "Select →"
+        },
+        {
+          "id": 5,
+          "airline": "SkyJet Airways",
+          "flight": "SJ 245",
+          "departure": "17:30 JFK",
+          "arrival": "05:20 LHR",
+          "duration": "6h 50m",
+          "stops": "Non-stop",
+          "baggage": "2 x 32kg",
+          "rating": 4.9,
+          "price": 2140,
+          "action": "Select →"
+        },
+        {
+          "id": 6,
+          "airline": "Nimbus Air",
+          "flight": "NB 452",
+          "departure": "19:10 JFK",
+          "arrival": "07:40 LHR",
+          "duration": "7h 05m",
+          "stops": "Non-stop",
+          "baggage": "1 x 23kg",
+          "rating": 4.4,
+          "price": 1710,
+          "action": "Select →"
+        }
+      ]
+    }
+  },
+  {
+    "version": "v0.9",
+    "updateDataModel": {
+      "surfaceId": "workspace",
+      "path": "/filteredFlights",
+      "value": [
+        {
+          "id": 1,
+          "airline": "SkyJet Airways",
+          "flight": "SJ 201",
+          "departure": "08:15 JFK",
+          "arrival": "20:05 LHR",
+          "duration": "6h 50m",
+          "stops": "Non-stop",
+          "baggage": "2 x 23kg",
+          "rating": 4.8,
+          "price": 1840,
+          "action": "Select →"
+        },
+        {
+          "id": 2,
+          "airline": "Nimbus Air",
+          "flight": "NB 440",
+          "departure": "09:40 JFK",
+          "arrival": "22:10 LHR",
+          "duration": "7h 30m",
+          "stops": "1 Stop",
+          "baggage": "2 x 23kg",
+          "rating": 4.5,
+          "price": 1495,
+          "action": "Select →"
+        },
+        {
+          "id": 3,
+          "airline": "AeroVista",
+          "flight": "AV 118",
+          "departure": "11:20 JFK",
+          "arrival": "23:45 LHR",
+          "duration": "6h 25m",
+          "stops": "Non-stop",
+          "baggage": "1 x 23kg",
+          "rating": 4.7,
+          "price": 1990,
+          "action": "Select →"
+        },
+        {
+          "id": 4,
+          "airline": "BlueOrbit",
+          "flight": "BO 772",
+          "departure": "14:05 JFK",
+          "arrival": "03:15 LHR",
+          "duration": "7h 10m",
+          "stops": "1 Stop",
+          "baggage": "2 x 23kg",
+          "rating": 4.3,
+          "price": 1320,
+          "action": "Select →"
+        },
+        {
+          "id": 5,
+          "airline": "SkyJet Airways",
+          "flight": "SJ 245",
+          "departure": "17:30 JFK",
+          "arrival": "05:20 LHR",
+          "duration": "6h 50m",
+          "stops": "Non-stop",
+          "baggage": "2 x 32kg",
+          "rating": 4.9,
+          "price": 2140,
+          "action": "Select →"
+        },
+        {
+          "id": 6,
+          "airline": "Nimbus Air",
+          "flight": "NB 452",
+          "departure": "19:10 JFK",
+          "arrival": "07:40 LHR",
+          "duration": "7h 05m",
+          "stops": "Non-stop",
+          "baggage": "1 x 23kg",
+          "rating": 4.4,
+          "price": 1710,
+          "action": "Select →"
+        }
+      ]
+    }
+  },
+  {
+    "version": "v0.9",
+    "updateDataModel": {
+      "surfaceId": "workspace",
+      "path": "/selectedFlight",
+      "value": null
+    }
+  },
+  {
+    "version": "v0.9",
+    "updateDataModel": {
+      "surfaceId": "workspace",
+      "path": "/_suggestions",
+      "value": [
+        "✈️ Add fare comparison",
+        "🧳 Show baggage rules",
+        "📅 Add flexible dates",
+        "⭐ Sort by best rated"
+      ]
+    }
+  }
+]
