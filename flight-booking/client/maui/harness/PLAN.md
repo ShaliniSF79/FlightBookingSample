@@ -23,7 +23,7 @@ Status legend: ✅ done & verified · 🟡 done, needs on-device verification ·
 |---|---|---|
 | P0 Harness | INTENT / PLAN / TASKS / ARCHITECTURE, `verify.sh` | ✅ |
 | P1 Scaffold | solution folders, `global.json`, props, MAUI project from .NET 10 template | ✅ |
-| P2 Core logic | Stage, ActionSummarizer, EnvelopeSanitizer, BookingSession, AgentClient, ContextResolver + 25 tests | ✅ |
+| P2 Core logic | Stage, ActionSummarizer, EnvelopeSanitizer, BookingSession, AgentClient, ContextResolver + 28 tests | ✅ |
 | P3 Agent designs | `designs_maui/*` validated by loading into the real `SurfaceHost` | ✅ |
 | P4 App shell | MauiProgram DI, `MainPage`, theme, welcome, chat, stepper, placeholder, responsive tabs | ✅ builds (Android) |
 | P5 Parity QA | Run against live agent on Windows/Android; walk the §6 checklist | 🟡 **requires device + OpenRouter key** |
