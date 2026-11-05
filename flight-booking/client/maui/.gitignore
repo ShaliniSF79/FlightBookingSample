@@ -3,3 +3,6 @@ obj/
 *.user
 .vs/
 TestResults/
+
+# Local Azure OpenAI settings (never commit)
+src/SkyBook.Maui/Resources/Raw/azure-openai.local.json

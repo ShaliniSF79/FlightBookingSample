@@ -62,6 +62,8 @@
 
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+		<!-- Agent designs, bundled so the stage pages still open when the agent is not running -->
+		<MauiAsset Include="..\..\..\..\agent\flight_booking_agent\designs_maui\*.json" Link="designs\%(Filename)%(Extension)" LogicalName="designs/%(Filename)%(Extension)" />
 	</ItemGroup>
 
 	<ItemGroup>

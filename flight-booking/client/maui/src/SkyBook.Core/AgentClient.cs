@@ -5,7 +5,7 @@ namespace SkyBook.Core;
 public sealed record AgentReply(JsonArray? A2uiMessages, string AgentText, string? ContextId);
 
 /// <summary>A2A JSON-RPC <c>message/send</c> client (same wire format as the React client).</summary>
-public sealed class AgentClient(HttpClient http, Uri agentUrl)
+public sealed class AgentClient(HttpClient http, Uri agentUrl) : IAgentClient
 {
     public static readonly Uri DefaultUrl = new("http://localhost:10006");
 
