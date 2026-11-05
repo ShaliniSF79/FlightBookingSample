@@ -7,7 +7,7 @@ public static class AppConfig
     /// Syncfusion license key (https://www.syncfusion.com/account/manage-trials). Leave empty to run with the trial banner.
     /// Do not commit a real key; supply it through your own build/CI mechanism.
     /// </summary>
-    public static string SyncfusionLicenseKey { get; } = "";
+    public static string SyncfusionLicenseKey { get; } = "Ngo9BigBOggjHTQxAR8/V1JBaF5cXmRCf1FpQHxbf1x2ZFRGalhYTnNWUiweQnxTdENiWH9bcXRQRmFcU0dyWUleZg==";
 
     /// <summary>Equivalent of VITE_AGENT_URL. The Android emulator reaches the host machine at 10.0.2.2.</summary>
     public static Uri AgentUrl { get; } = new(
