@@ -1,5 +1,6 @@
 using Syncfusion.A2UI.Core.BasicCatalog;
 using Syncfusion.A2UI.Core.Rendering;
+using Syncfusion.Maui.A2UI.Catalog;
 
 namespace SkyBook.Maui.Ui;
 
@@ -17,7 +18,7 @@ public sealed class A2uiScrollViewRenderer : IA2uiComponentRenderer
         var scroll = new ScrollView
         {
             HorizontalOptions = LayoutOptions.Fill,
-            VerticalOptions = LayoutOptions.FillAndExpand,
+            VerticalOptions = LayoutOptions.Fill,
         };
 
         var children = Kids.Build(props, buildChild);
