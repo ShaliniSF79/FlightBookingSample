@@ -128,7 +128,7 @@
                 <Grid RowDefinitions="Auto,Auto,*">
                     <Grid x:Name="Stepper" Grid.Row="0" Padding="24,14" ColumnSpacing="0" BackgroundColor="#f8fafc" IsVisible="False" />
                     <ActivityIndicator x:Name="SurfaceLoading" Grid.Row="1" IsVisible="False" IsRunning="False" HeightRequest="20" Color="{StaticResource CPrimary}" />
-                    <ScrollView x:Name="SurfaceScroll" Grid.Row="2" IsVisible="False">
+                    <ScrollView x:Name="SurfaceScroll" Grid.Row="2" IsVisible="False" VerticalOptions="FillAndExpand">
                         <a2ui:A2uiSurface x:Name="SurfaceView" />
                     </ScrollView>
                     <ScrollView x:Name="Placeholder" Grid.Row="2">
