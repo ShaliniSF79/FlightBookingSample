@@ -168,8 +168,16 @@ def main() -> None:
     _log.info("Starting FlightBookingAgent...")
 
     env_path = os.path.join(os.path.dirname(__file__), ".env")
-    load_dotenv(env_path)
-    _require_env(env_path)
+    if os.path.isfile(env_path):
+        load_dotenv(env_path)
+    # Only require env vars when they are actually missing.
+    missing = [name for name in _REQUIRED_ENV_VARS if not os.environ.get(name)]
+    if missing:
+        raise OSError(
+            "Missing required environment variables: "
+            + ", ".join(missing)
+            + ". Set them in your environment (or create flight_booking_agent/.env)."
+        )
 
     if os.environ.get("AZURE_OPENAI_API_KEY"):
         provider = AzureOpenAIProvider(
