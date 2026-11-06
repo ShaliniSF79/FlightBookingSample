@@ -215,24 +215,94 @@
           }
         },
         {
-          "id": "travellerDataForm",
-          "component": "SyncfusionDataForm",
-          "dataObject": {
-            "path": "/passenger"
-          },
-          "items": [
+          "id": "row4",
+          "component": "Row",
+          "gap": 16,
+          "children": [
             "firstName",
             "lastName",
-            "email",
-            "passportNumber",
+            "email"
+          ]
+        },
+        {
+          "id": "firstName",
+          "component": "TextField",
+          "weight": 1,
+          "label": "Traveller First Name",
+          "value": {
+            "path": "/passenger/firstName"
+          }
+        },
+        {
+          "id": "lastName",
+          "component": "TextField",
+          "weight": 1,
+          "label": "Traveller Last Name",
+          "value": {
+            "path": "/passenger/lastName"
+          }
+        },
+        {
+          "id": "email",
+          "component": "TextField",
+          "weight": 1,
+          "label": "Contact Email",
+          "value": {
+            "path": "/passenger/email"
+          }
+        },
+        {
+          "id": "row5",
+          "component": "Row",
+          "gap": 16,
+          "children": [
+            "passport",
             "nationality"
+          ]
+        },
+        {
+          "id": "passport",
+          "component": "SyncfusionMaskedEntry",
+          "weight": 1,
+          "label": "Passport Number",
+          "mask": "AAAAAAAAA",
+          "value": {
+            "path": "/passenger/passportNumber"
+          }
+        },
+        {
+          "id": "nationality",
+          "component": "SyncfusionComboBox",
+          "weight": 1,
+          "label": "Nationality",
+          "options": [
+            {
+              "text": "United States",
+              "value": "US"
+            },
+            {
+              "text": "United Kingdom",
+              "value": "UK"
+            },
+            {
+              "text": "United Arab Emirates",
+              "value": "UAE"
+            },
+            {
+              "text": "India",
+              "value": "IN"
+            },
+            {
+              "text": "Singapore",
+              "value": "SG"
+            }
           ],
-          "autoGenerateItems": true,
-          "layout": {
-            "type": "Grid",
-            "columnCount": 2
-          },
-          "validationMode": "OnSubmit"
+          "displayMemberPath": "text",
+          "textMemberPath": "text",
+          "selectedValuePath": "value",
+          "value": {
+            "path": "/passenger/nationality"
+          }
         },
         {
           "id": "searchBtn",
