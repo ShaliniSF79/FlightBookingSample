@@ -14,39 +14,39 @@
         {
           "id": "root",
           "component": "Column",
-          "gap": 14,
+          "padding": 24,
+          "gap": 12,
           "children": [
             "title",
             "subtitle",
             "formCard"
-          ],
-          "padding": 24
+          ]
         },
         {
           "id": "title",
           "component": "Text",
-          "text": "✈️ Find Your Perfect Flight",
+          "text": "✈ Find Your Perfect Flight",
           "variant": "h3"
         },
         {
           "id": "subtitle",
           "component": "Text",
-          "text": "Search premium routes, configure traveller preferences, and prepare booking details in one streamlined enterprise workflow.",
-          "variant": "caption"
+          "variant": "caption",
+          "text": "Search premium routes, configure traveller preferences, and prepare booking details in one streamlined enterprise workflow."
         },
         {
           "id": "formCard",
           "component": "SyncfusionCardView",
-          "content": "formCol",
-          "cornerRadius": 16,
+          "content": "formContainer",
+          "cornerRadius": 14,
           "borderWidth": 1,
-          "borderColor": "#e5e7eb",
-          "backgroundColor": "#ffffff"
+          "borderColor": "#E5E7EB"
         },
         {
-          "id": "formCol",
+          "id": "formContainer",
           "component": "Column",
-          "gap": 16,
+          "gap": 14,
+          "padding": 16,
           "children": [
             "row1",
             "row2",
@@ -54,13 +54,12 @@
             "row4",
             "row5",
             "searchBtn"
-          ],
-          "padding": 24
+          ]
         },
         {
           "id": "row1",
           "component": "Row",
-          "gap": 16,
+          "gap": 10,
           "children": [
             "tripType",
             "from",
@@ -72,6 +71,9 @@
           "component": "SyncfusionComboBox",
           "weight": 1,
           "label": "Trip Type",
+          "displayMemberPath": "text",
+          "textMemberPath": "text",
+          "selectedValuePath": "value",
           "options": [
             {
               "text": "Round Trip",
@@ -86,9 +88,6 @@
               "value": "multiCity"
             }
           ],
-          "displayMemberPath": "text",
-          "textMemberPath": "text",
-          "selectedValuePath": "value",
           "value": {
             "path": "/search/tripType"
           }
@@ -114,7 +113,7 @@
         {
           "id": "row2",
           "component": "Row",
-          "gap": 16,
+          "gap": 10,
           "children": [
             "departureDate",
             "returnDate",
@@ -148,6 +147,9 @@
           "component": "SyncfusionComboBox",
           "weight": 1,
           "label": "Cabin Class",
+          "displayMemberPath": "text",
+          "textMemberPath": "text",
+          "selectedValuePath": "value",
           "options": [
             {
               "text": "Economy",
@@ -166,9 +168,6 @@
               "value": "first"
             }
           ],
-          "displayMemberPath": "text",
-          "textMemberPath": "text",
-          "selectedValuePath": "value",
           "value": {
             "path": "/search/cabinClass"
           }
@@ -176,7 +175,7 @@
         {
           "id": "row3",
           "component": "Row",
-          "gap": 16,
+          "gap": 10,
           "children": [
             "adults",
             "children"
@@ -211,7 +210,7 @@
         {
           "id": "row4",
           "component": "Row",
-          "gap": 16,
+          "gap": 10,
           "children": [
             "firstName",
             "lastName",
@@ -248,7 +247,7 @@
         {
           "id": "row5",
           "component": "Row",
-          "gap": 16,
+          "gap": 10,
           "children": [
             "passport",
             "nationality"
@@ -269,6 +268,9 @@
           "component": "SyncfusionComboBox",
           "weight": 1,
           "label": "Nationality",
+          "displayMemberPath": "text",
+          "textMemberPath": "text",
+          "selectedValuePath": "value",
           "options": [
             {
               "text": "United States",
@@ -291,9 +293,6 @@
               "value": "SG"
             }
           ],
-          "displayMemberPath": "text",
-          "textMemberPath": "text",
-          "selectedValuePath": "value",
           "value": {
             "path": "/passenger/nationality"
           }
@@ -302,9 +301,10 @@
           "id": "searchBtn",
           "component": "SyncfusionButton",
           "text": "Search Flights",
-          "background": "#2563eb",
-          "textColor": "#ffffff",
-          "cornerRadius": 8,
+          "background": "#2563EB",
+          "textColor": "#FFFFFF",
+          "cornerRadius": 6,
+          "heightRequest": 44,
           "fontAttributes": "Bold",
           "onClick": {
             "event": {
@@ -352,8 +352,7 @@
                 }
               }
             }
-          },
-          "heightRequest": 48
+          }
         }
       ]
     }
@@ -365,12 +364,12 @@
       "path": "/",
       "value": {
         "search": {
-          "tripType": "",
+          "tripType": "roundTrip",
           "from": "",
           "to": "",
-          "departureDate": "",
-          "returnDate": "",
-          "cabinClass": "",
+          "departureDate": "2026-09-15",
+          "returnDate": "2026-09-24",
+          "cabinClass": "business",
           "passengers": {
             "adults": 1,
             "children": 0
