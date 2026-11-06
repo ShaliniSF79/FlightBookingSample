@@ -15,11 +15,11 @@
           "id": "root",
           "component": "Column",
           "padding": 24,
-          "gap": 16,
+          "gap": 12,
           "children": [
             "title",
             "subtitle",
-            "formContainer"
+            "formCard"
           ]
         },
 
@@ -38,10 +38,25 @@
         },
 
         {
+<<<<<<< HEAD
           "id": "formContainer",
           "component": "Column",
           "padding": 12,
           "gap": 20,
+=======
+          "id": "formCard",
+          "component": "SyncfusionCardView",
+          "content": "formContainer",
+          "cornerRadius": 14,
+          "borderWidth": 1,
+          "borderColor": "#E5E7EB"
+        },
+        {
+          "id": "formContainer",
+          "component": "Column",
+          "gap": 14,
+          "padding": 16,
+>>>>>>> 684274a615558ba45676ada2a7c7a2427175e397
           "children": [
             "row1",
             "row2",
@@ -55,7 +70,7 @@
         {
           "id": "row1",
           "component": "Row",
-          "gap": 16,
+          "gap": 10,
           "children": [
             "tripType",
             "from",
@@ -113,7 +128,7 @@
         {
           "id": "row2",
           "component": "Row",
-          "gap": 16,
+          "gap": 10,
           "children": [
             "departureDate",
             "returnDate",
@@ -179,7 +194,7 @@
         {
           "id": "row3",
           "component": "Row",
-          "gap": 16,
+          "gap": 10,
           "children": [
             "adults",
             "children"
@@ -215,7 +230,7 @@
         {
           "id": "row4",
           "component": "Row",
-          "gap": 16,
+          "gap": 10,
           "children": [
             "firstName",
             "lastName",
@@ -256,7 +271,7 @@
         {
           "id": "row5",
           "component": "Row",
-          "gap": 16,
+          "gap": 10,
           "children": [
             "passport",
             "nationality"
@@ -308,11 +323,19 @@
         {
           "id": "searchBtn",
           "component": "SyncfusionButton",
+<<<<<<< HEAD
           "text": "🔍 Search Flights",
           "heightRequest": 48,
           "cornerRadius": 8,
           "background": "#2563EB",
           "textColor": "#FFFFFF",
+=======
+          "text": "Search Flights",
+          "background": "#2563EB",
+          "textColor": "#FFFFFF",
+          "cornerRadius": 6,
+          "heightRequest": 44,
+>>>>>>> 684274a615558ba45676ada2a7c7a2427175e397
           "fontAttributes": "Bold",
           "horizontalOptions": "Fill",
           "onClick": {
@@ -361,9 +384,15 @@
           "tripType": "roundTrip",
           "from": "",
           "to": "",
+<<<<<<< HEAD
           "departureDate": "",
           "returnDate": "",
           "cabinClass": "economy",
+=======
+          "departureDate": "2026-09-15",
+          "returnDate": "2026-09-24",
+          "cabinClass": "business",
+>>>>>>> 684274a615558ba45676ada2a7c7a2427175e397
           "passengers": {
             "adults": 1,
             "children": 0
