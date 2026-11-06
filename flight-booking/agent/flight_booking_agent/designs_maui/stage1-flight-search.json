@@ -38,17 +38,18 @@
         {
           "id": "formCard",
           "component": "SyncfusionCardView",
-          "content": "formContainer",
+          "content": "formScrollArea",
           "cornerRadius": 16,
           "borderWidth": 1,
           "borderColor": "#E5E7EB",
-          "backgroundColor": "#FFFFFF"
+          "backgroundColor": "#F3F0FF",
+          "heightRequest": 720
         },
         {
           "id": "formContainer",
           "component": "Column",
-          "padding": 16,
-          "gap": 14,
+          "padding": 18,
+          "gap": 18,
           "horizontalOptions": "Fill",
           "children": [
             "row1",
@@ -58,6 +59,12 @@
             "row5",
             "searchBtn"
           ]
+        },
+        {
+          "id": "formScrollArea",
+          "component": "ScrollView",
+          "heightRequest": 690,
+          "content": "formContainer"
         },
         {
           "id": "row1",
@@ -78,25 +85,40 @@
           "textMemberPath": "text",
           "selectedValuePath": "value",
           "options": [
-            { "text": "Round Trip", "value": "roundTrip" },
-            { "text": "One Way", "value": "oneWay" },
-            { "text": "Multi City", "value": "multiCity" }
+            {
+              "text": "Round Trip",
+              "value": "roundTrip"
+            },
+            {
+              "text": "One Way",
+              "value": "oneWay"
+            },
+            {
+              "text": "Multi City",
+              "value": "multiCity"
+            }
           ],
-          "value": { "path": "/search/tripType" }
+          "value": {
+            "path": "/search/tripType"
+          }
         },
         {
           "id": "from",
           "component": "TextField",
           "weight": 1,
           "label": "From",
-          "value": { "path": "/search/from" }
+          "value": {
+            "path": "/search/from"
+          }
         },
         {
           "id": "to",
           "component": "TextField",
           "weight": 1,
           "label": "To",
-          "value": { "path": "/search/to" }
+          "value": {
+            "path": "/search/to"
+          }
         },
         {
           "id": "row2",
@@ -115,7 +137,9 @@
           "label": "Departure Date",
           "enableDate": true,
           "enableTime": false,
-          "value": { "path": "/search/departureDate" }
+          "value": {
+            "path": "/search/departureDate"
+          }
         },
         {
           "id": "returnDate",
@@ -124,7 +148,9 @@
           "label": "Return Date",
           "enableDate": true,
           "enableTime": false,
-          "value": { "path": "/search/returnDate" }
+          "value": {
+            "path": "/search/returnDate"
+          }
         },
         {
           "id": "cabinClass",
@@ -135,12 +161,26 @@
           "textMemberPath": "text",
           "selectedValuePath": "value",
           "options": [
-            { "text": "Economy", "value": "economy" },
-            { "text": "Premium Economy", "value": "premiumEconomy" },
-            { "text": "Business", "value": "business" },
-            { "text": "First Class", "value": "first" }
+            {
+              "text": "Economy",
+              "value": "economy"
+            },
+            {
+              "text": "Premium Economy",
+              "value": "premiumEconomy"
+            },
+            {
+              "text": "Business",
+              "value": "business"
+            },
+            {
+              "text": "First Class",
+              "value": "first"
+            }
           ],
-          "value": { "path": "/search/cabinClass" }
+          "value": {
+            "path": "/search/cabinClass"
+          }
         },
         {
           "id": "row3",
@@ -160,7 +200,9 @@
           "maximum": 9,
           "allowNull": false,
           "showUpDownButton": true,
-          "value": { "path": "/search/passengers/adults" }
+          "value": {
+            "path": "/search/passengers/adults"
+          }
         },
         {
           "id": "children",
@@ -171,7 +213,9 @@
           "maximum": 8,
           "allowNull": false,
           "showUpDownButton": true,
-          "value": { "path": "/search/passengers/children" }
+          "value": {
+            "path": "/search/passengers/children"
+          }
         },
         {
           "id": "row4",
@@ -188,21 +232,27 @@
           "component": "TextField",
           "weight": 1,
           "label": "Traveller First Name",
-          "value": { "path": "/passenger/firstName" }
+          "value": {
+            "path": "/passenger/firstName"
+          }
         },
         {
           "id": "lastName",
           "component": "TextField",
           "weight": 1,
           "label": "Traveller Last Name",
-          "value": { "path": "/passenger/lastName" }
+          "value": {
+            "path": "/passenger/lastName"
+          }
         },
         {
           "id": "email",
           "component": "TextField",
           "weight": 1,
           "label": "Contact Email",
-          "value": { "path": "/passenger/email" }
+          "value": {
+            "path": "/passenger/email"
+          }
         },
         {
           "id": "row5",
@@ -219,7 +269,9 @@
           "weight": 1,
           "label": "Passport Number",
           "mask": "AAAAAAAAA",
-          "value": { "path": "/passenger/passportNumber" }
+          "value": {
+            "path": "/passenger/passportNumber"
+          }
         },
         {
           "id": "nationality",
@@ -230,12 +282,26 @@
           "textMemberPath": "text",
           "selectedValuePath": "value",
           "options": [
-            { "text": "India", "value": "IN" },
-            { "text": "Singapore", "value": "SG" },
-            { "text": "United States", "value": "US" },
-            { "text": "United Kingdom", "value": "UK" }
+            {
+              "text": "India",
+              "value": "IN"
+            },
+            {
+              "text": "Singapore",
+              "value": "SG"
+            },
+            {
+              "text": "United States",
+              "value": "US"
+            },
+            {
+              "text": "United Kingdom",
+              "value": "UK"
+            }
           ],
-          "value": { "path": "/passenger/nationality" }
+          "value": {
+            "path": "/passenger/nationality"
+          }
         },
         {
           "id": "searchBtn",
@@ -252,19 +318,45 @@
               "name": "searchFlights",
               "sourceComponentId": "searchBtn",
               "context": {
-                "tripType": { "path": "/search/tripType" },
-                "from": { "path": "/search/from" },
-                "to": { "path": "/search/to" },
-                "departureDate": { "path": "/search/departureDate" },
-                "returnDate": { "path": "/search/returnDate" },
-                "cabinClass": { "path": "/search/cabinClass" },
-                "adults": { "path": "/search/passengers/adults" },
-                "children": { "path": "/search/passengers/children" },
-                "firstName": { "path": "/passenger/firstName" },
-                "lastName": { "path": "/passenger/lastName" },
-                "email": { "path": "/passenger/email" },
-                "passportNumber": { "path": "/passenger/passportNumber" },
-                "nationality": { "path": "/passenger/nationality" }
+                "tripType": {
+                  "path": "/search/tripType"
+                },
+                "from": {
+                  "path": "/search/from"
+                },
+                "to": {
+                  "path": "/search/to"
+                },
+                "departureDate": {
+                  "path": "/search/departureDate"
+                },
+                "returnDate": {
+                  "path": "/search/returnDate"
+                },
+                "cabinClass": {
+                  "path": "/search/cabinClass"
+                },
+                "adults": {
+                  "path": "/search/passengers/adults"
+                },
+                "children": {
+                  "path": "/search/passengers/children"
+                },
+                "firstName": {
+                  "path": "/passenger/firstName"
+                },
+                "lastName": {
+                  "path": "/passenger/lastName"
+                },
+                "email": {
+                  "path": "/passenger/email"
+                },
+                "passportNumber": {
+                  "path": "/passenger/passportNumber"
+                },
+                "nationality": {
+                  "path": "/passenger/nationality"
+                }
               }
             }
           }
