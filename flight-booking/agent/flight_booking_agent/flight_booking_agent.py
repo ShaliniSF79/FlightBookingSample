@@ -20,7 +20,7 @@ from syncfusion_a2ui_agent.providers.base import AIProvider
 _log = logging.getLogger("syncfusion_a2ui_agent")
 
 # FLIGHT_BOOKING_CLIENT=maui serves the .NET MAUI catalog (``syncfusion-maui``) designs instead of the React ones.
-_CLIENT = os.environ.get("FLIGHT_BOOKING_CLIENT", "react").strip().lower()
+_CLIENT = os.environ.get("FLIGHT_BOOKING_CLIENT", "maui").strip().lower()
 DESIGNS_DIR = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
     "designs_maui" if _CLIENT == "maui" else "designs",
