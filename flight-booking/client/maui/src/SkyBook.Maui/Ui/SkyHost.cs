@@ -19,6 +19,7 @@ public static class SkyHost
         foreach (var r in new IA2uiComponentRenderer[]
         {
             new SkyColumnRenderer(), new SkyRowRenderer(), new SkyTextRenderer(), new SkyAppBarRenderer(),
+            new A2uiScrollViewRenderer(),
             new SkyDataGridRenderer(row => BookRequested?.Invoke(row)),
         })
             renderers[r.ComponentName] = r;
