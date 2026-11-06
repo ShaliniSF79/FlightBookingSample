@@ -45,8 +45,9 @@ public sealed class SkyRowRenderer : IA2uiComponentRenderer
             HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Start,
         };
         var kids = Kids.Build(props, buildChild);
-        var weights = kids.Select(k => FlexLayout.GetGrow(k)).ToList();
-        foreach (var k in kids) { k.VerticalOptions = LayoutOptions.Start; grid.Add(k); }
+        // Every field shares the row width (the stock inputs report no weight, which left each column content-sized).
+        var weights = kids.Select(k => FlexLayout.GetGrow(k) > 0 ? (double)FlexLayout.GetGrow(k) : 1d).ToList();
+        foreach (var k in kids) { k.VerticalOptions = LayoutOptions.Start; k.HorizontalOptions = LayoutOptions.Fill; grid.Add(k); }
 
         bool? stacked = null;
         void Arrange(bool stack)
@@ -63,7 +64,7 @@ public sealed class SkyRowRenderer : IA2uiComponentRenderer
                 }
                 else
                 {
-                    grid.ColumnDefinitions.Add(new ColumnDefinition(weights[i] > 0 ? new GridLength(weights[i], GridUnitType.Star) : GridLength.Auto));
+                    grid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(weights[i], GridUnitType.Star)));
                     Grid.SetRow(kids[i], 0); Grid.SetColumn(kids[i], i);
                 }
             }

@@ -247,6 +247,9 @@ public sealed class LocalAgent(Func<string, Task<string>> loadDesign, HttpClient
     private async Task<JsonArray> SearchPageAsync(Trip t, string say)
     {
         var d = await LoadAsync("stage1-flight-search.json");
+        // The date pickers show a date even before the user touches them; store the same value so Search sees it.
+        if (t.DepartureDate == "") t.DepartureDate = DateTime.Today.AddDays(14).ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+        if (t.ReturnDate == "") t.ReturnDate = DateTime.Today.AddDays(21).ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
         SetData(d, "/", new JsonObject
         {
             ["search"] = new JsonObject
