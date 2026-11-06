@@ -35,51 +35,24 @@
           "variant": "caption"
         },
         {
-          "id": "heroCard",
-          "component": "SyncfusionCardView",
-          "content": "heroCol",
-          "cornerRadius": 28,
-          "borderWidth": 0,
-          "backgroundColor": "#ffffffcc",
-          "padding": 28
-        },
-        {
-          "id": "heroCol",
-          "component": "Column",
-          "gap": 12,
-          "children": [
-            "titleBlock",
-            "subtitleBlock",
-            "formCard"
-          ]
-        },
-        {
-          "id": "titleBlock",
-          "component": "Text",
-          "text": "✈️ Find Your Perfect Flight",
-          "variant": "h3",
-          "textColor": "#0b1220",
-          "fontAttributes": "Bold"
-        },
-        {
-          "id": "subtitleBlock",
-          "component": "Text",
-          "text": "Search premium routes, configure traveller preferences, and prepare booking details in one streamlined enterprise workflow.",
-          "variant": "caption"
-        },
-        {
           "id": "formCard",
           "component": "SyncfusionCardView",
-          "content": "formCol",
-          "cornerRadius": 24,
+          "content": "formScrollArea",
+          "cornerRadius": 18,
           "borderWidth": 0,
-          "backgroundColor": "#ffffffcc",
-          "padding": 24
+          "backgroundColor": "#f3f0ff",
+          "padding": 18
+        },
+        {
+          "id": "formScrollArea",
+          "component": "ScrollView",
+          "heightRequest": 1200,
+          "content": "formCol"
         },
         {
           "id": "formCol",
           "component": "Column",
-          "gap": 10,
+          "gap": 14,
           "children": [
             "row1",
             "row2",
@@ -88,7 +61,7 @@
             "row5",
             "searchBtn"
           ],
-          "padding": 20
+          "padding": 0
         },
         {
           "id": "row1",
@@ -242,94 +215,24 @@
           }
         },
         {
-          "id": "row4",
-          "component": "Row",
-          "gap": 16,
-          "children": [
+          "id": "travellerDataForm",
+          "component": "SyncfusionDataForm",
+          "dataObject": {
+            "path": "/passenger"
+          },
+          "items": [
             "firstName",
             "lastName",
-            "email"
-          ]
-        },
-        {
-          "id": "firstName",
-          "component": "TextField",
-          "weight": 1,
-          "label": "Traveller First Name",
-          "value": {
-            "path": "/passenger/firstName"
-          }
-        },
-        {
-          "id": "lastName",
-          "component": "TextField",
-          "weight": 1,
-          "label": "Traveller Last Name",
-          "value": {
-            "path": "/passenger/lastName"
-          }
-        },
-        {
-          "id": "email",
-          "component": "TextField",
-          "weight": 1,
-          "label": "Contact Email",
-          "value": {
-            "path": "/passenger/email"
-          }
-        },
-        {
-          "id": "row5",
-          "component": "Row",
-          "gap": 16,
-          "children": [
-            "passport",
+            "email",
+            "passportNumber",
             "nationality"
-          ]
-        },
-        {
-          "id": "passport",
-          "component": "SyncfusionMaskedEntry",
-          "weight": 1,
-          "label": "Passport Number",
-          "mask": "AAAAAAAAA",
-          "value": {
-            "path": "/passenger/passportNumber"
-          }
-        },
-        {
-          "id": "nationality",
-          "component": "SyncfusionComboBox",
-          "weight": 1,
-          "label": "Nationality",
-          "options": [
-            {
-              "text": "United States",
-              "value": "US"
-            },
-            {
-              "text": "United Kingdom",
-              "value": "UK"
-            },
-            {
-              "text": "United Arab Emirates",
-              "value": "UAE"
-            },
-            {
-              "text": "India",
-              "value": "IN"
-            },
-            {
-              "text": "Singapore",
-              "value": "SG"
-            }
           ],
-          "displayMemberPath": "text",
-          "textMemberPath": "text",
-          "selectedValuePath": "value",
-          "value": {
-            "path": "/passenger/nationality"
-          }
+          "autoGenerateItems": true,
+          "layout": {
+            "type": "Grid",
+            "columnCount": 2
+          },
+          "validationMode": "OnSubmit"
         },
         {
           "id": "searchBtn",
@@ -397,12 +300,12 @@
       "path": "/",
       "value": {
         "search": {
-          "tripType": "",
-          "from": "",
-          "to": "",
-          "departureDate": "",
-          "returnDate": "",
-          "cabinClass": "",
+          "tripType": "roundTrip",
+          "from": "New York (JFK)",
+          "to": "London (LHR)",
+          "departureDate": "2026-09-15",
+          "returnDate": "2026-09-24",
+          "cabinClass": "business",
           "passengers": {
             "adults": 0,
             "children": 0
