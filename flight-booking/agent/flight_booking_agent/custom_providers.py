@@ -12,9 +12,10 @@ from collections.abc import AsyncIterator, Iterable
 from typing import Any
 
 try:
-    from openai import AsyncOpenAI
+    from openai import AsyncOpenAI, AsyncAzureOpenAI
 except ImportError:
     AsyncOpenAI = None  # type: ignore[assignment, misc]
+    AsyncAzureOpenAI = None  # type: ignore[assignment, misc]
 
 from syncfusion_a2ui_agent.providers import (
     AIProvider,
@@ -25,6 +26,63 @@ from syncfusion_a2ui_agent.providers.base import StreamEvent
 
 log = logging.getLogger(__name__)
 
+
+
+
+class AzureOpenAIProvider(AIProvider):
+    name = "azure-openai"
+
+    def __init__(self, **kwargs: Any) -> None:
+        super().__init__(**kwargs)
+
+        if AsyncAzureOpenAI is None:
+            raise ProviderError("openai is not installed. `pip install openai`.")
+
+        api_key = kwargs.get("api_key") or os.environ.get("AZURE_OPENAI_API_KEY")
+        endpoint = kwargs.get("endpoint") or os.environ.get("AZURE_OPENAI_ENDPOINT")
+        deployment = kwargs.get("deployment") or os.environ.get("AZURE_OPENAI_DEPLOYMENT")
+        api_version = kwargs.get("api_version") or os.environ.get("AZURE_OPENAI_API_VERSION") or "2024-11-20"
+
+        if not api_key:
+            raise ProviderError("AzureOpenAIProvider requires `api_key` (or AZURE_OPENAI_API_KEY).")
+        if not endpoint:
+            raise ProviderError("AzureOpenAIProvider requires `endpoint` (or AZURE_OPENAI_ENDPOINT).")
+        if not deployment:
+            raise ProviderError("AzureOpenAIProvider requires `deployment` (or AZURE_OPENAI_DEPLOYMENT).")
+
+        self.model = deployment
+        self.default_max_tokens = int(kwargs.get("max_completion_tokens") or 8000)
+        base_url = endpoint.rstrip("/") + f"/openai/deployments/{deployment}"
+        self._client = AsyncAzureOpenAI(api_key=api_key, api_version=api_version, azure_endpoint=endpoint)
+
+    async def generate(self, messages: list[dict[str, Any]], tools: Iterable[dict[str, Any]] | None = None, context: dict[str, Any] | None = None) -> ModelResponse:
+        kwargs = self._build_request_kwargs(messages, tools, context, stream=False)
+        try:
+            resp = await self._client.chat.completions.create(**kwargs)
+        except Exception as exc:
+            log.exception(f"Azure OpenAI generate failed for model {self.model}")
+            raise ProviderError(f"Azure OpenAI API error: {exc!s}") from exc
+        content = resp.choices[0].message.content if resp.choices else ""
+        return ModelResponse(content=content or "", model=self.model, raw=resp, usage=self._usage_to_dict(getattr(resp, "usage", None)))
+
+    async def stream(self, messages: list[dict[str, Any]], tools: Iterable[dict[str, Any]] | None = None, context: dict[str, Any] | None = None) -> AsyncIterator[StreamEvent]:
+        kwargs = self._build_request_kwargs(messages, tools, context, stream=True)
+        content_buf: list[str] = []
+        try:
+            stream = await self._client.chat.completions.create(**kwargs)
+            async for chunk in stream:
+                if not getattr(chunk, "choices", None):
+                    continue
+                delta = getattr(chunk.choices[0], "delta", None)
+                text_delta = getattr(delta, "content", None) if delta is not None else None
+                if text_delta:
+                    content_buf.append(text_delta)
+                    yield StreamEvent(delta=text_delta)
+        except Exception as exc:
+            log.exception("Azure OpenAI stream failed")
+            yield StreamEvent(done=True, error=f"Azure OpenAI API error: {exc!s}")
+            return
+        yield StreamEvent(response=ModelResponse(content="".join(content_buf), model=self.model, raw=None, usage={}), done=True)
 
 class OpenRouterProvider(AIProvider):
     """Custom OpenRouter provider — OpenAI-compatible, 100+ model endpoint.

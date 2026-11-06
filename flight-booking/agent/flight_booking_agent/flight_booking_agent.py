@@ -19,7 +19,25 @@ from syncfusion_a2ui_agent.providers.base import AIProvider
 
 _log = logging.getLogger("syncfusion_a2ui_agent")
 
-DESIGNS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "designs")
+# FLIGHT_BOOKING_CLIENT=maui serves the .NET MAUI catalog (``syncfusion-maui``) designs instead of the React ones.
+_CLIENT = os.environ.get("FLIGHT_BOOKING_CLIENT", "react").strip().lower()
+DESIGNS_DIR = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    "designs_maui" if _CLIENT == "maui" else "designs",
+)
+
+_MAUI_PROMPT_ADDENDUM = """
+
+# Client platform: .NET MAUI (overrides the React-specific notes above)
+
+The client is a .NET MAUI app using catalog `syncfusion-maui`. Echo the bundled
+designs exactly (catalogId `syncfusion-maui`). Never emit `SyncfusionAppBar`,
+`SyncfusionMessage`, `SyncfusionCard`, `SyncfusionTextBox` or other React-only
+components. For the out-of-scope fallback use a `Column` containing a `Text`
+(variant `h4`) with "I can only assist with SkyWave Airlines flight bookings."
+and a `SyncfusionButton` (`text`: "Book a Flight") whose `onClick` event is
+`startFlightSearch`, with `catalogId` `syncfusion-maui`.
+"""
 
 # Token budget for echoing one design envelope verbatim. The A2UI design
 # JSONs are ~6-12 KB; 8000 completion tokens is a comfortable ceiling
@@ -104,7 +122,7 @@ class FlightBookingAgent(SyncfusionAgent):
                     len(content),
                     prompt_path,
                 )
-                return content
+                return content + (_MAUI_PROMPT_ADDENDUM if _CLIENT == "maui" else "")
         except FileNotFoundError:
             _log.warning(
                 "system_prompt.md not found at %s; using fallback prompt.",
@@ -138,7 +156,7 @@ def main() -> None:
 
     # Handle both direct execution and module execution
     try:
-        from .custom_providers import OpenRouterProvider
+        from .custom_providers import AzureOpenAIProvider, OpenRouterProvider
     except ImportError:
         from custom_providers import OpenRouterProvider
 
@@ -153,13 +171,21 @@ def main() -> None:
     load_dotenv(env_path)
     _require_env(env_path)
 
-    # Use OpenRouter provider with 100+ models
-    provider = OpenRouterProvider(
-        api_key=os.environ["OPENROUTER_API_KEY"],
-        model=os.environ["MODEL_NAME"],
-        base_url="https://openrouter.ai/api/v1",
-        **_LLM_SPEED_KNOBS,
-    )
+    if os.environ.get("AZURE_OPENAI_API_KEY"):
+        provider = AzureOpenAIProvider(
+            api_key=os.environ["AZURE_OPENAI_API_KEY"],
+            endpoint=os.environ["AZURE_OPENAI_ENDPOINT"],
+            deployment=os.environ["AZURE_OPENAI_DEPLOYMENT"],
+            api_version=os.environ.get("AZURE_OPENAI_API_VERSION", "2024-11-20"),
+            **_LLM_SPEED_KNOBS,
+        )
+    else:
+        provider = OpenRouterProvider(
+            api_key=os.environ["OPENROUTER_API_KEY"],
+            model=os.environ["MODEL_NAME"],
+            base_url="https://openrouter.ai/api/v1",
+            **_LLM_SPEED_KNOBS,
+        )
     agent = FlightBookingAgent(model=provider)
     # A2A server - the bundled test-page.html POSTs to this URL.
     agent.serve(host="127.0.0.1", port=10006)
