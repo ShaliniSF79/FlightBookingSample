@@ -363,23 +363,23 @@
       "path": "/",
       "value": {
         "search": {
-          "tripType": "roundTrip",
-          "from": "New York (JFK)",
-          "to": "London (LHR)",
-          "departureDate": "2026-09-15",
-          "returnDate": "2026-09-24",
-          "cabinClass": "business",
+          "tripType": "",
+          "from": "",
+          "to": "",
+          "departureDate": "",
+          "returnDate": "",
+          "cabinClass": "",
           "passengers": {
-            "adults": 2,
-            "children": 1
+            "adults": 0,
+            "children": 0
           }
         },
         "passenger": {
-          "firstName": "Alexandra",
-          "lastName": "Reed",
-          "email": "alexandra.reed@enterpriseair.com",
-          "passportNumber": "XK92PL781",
-          "nationality": "US"
+          "firstName": "",
+          "lastName": "",
+          "email": "",
+          "passportNumber": "",
+          "nationality": ""
         }
       }
     }
