@@ -35,12 +35,46 @@
           "variant": "caption"
         },
         {
+          "id": "heroCard",
+          "component": "SyncfusionCardView",
+          "content": "heroCol",
+          "cornerRadius": 28,
+          "borderWidth": 0,
+          "backgroundColor": "#ffffffcc",
+          "padding": 28
+        },
+        {
+          "id": "heroCol",
+          "component": "Column",
+          "gap": 12,
+          "children": [
+            "titleBlock",
+            "subtitleBlock",
+            "formCard"
+          ]
+        },
+        {
+          "id": "titleBlock",
+          "component": "Text",
+          "text": "✈️ Find Your Perfect Flight",
+          "variant": "h3",
+          "textColor": "#0b1220",
+          "fontAttributes": "Bold"
+        },
+        {
+          "id": "subtitleBlock",
+          "component": "Text",
+          "text": "Search premium routes, configure traveller preferences, and prepare booking details in one streamlined enterprise workflow.",
+          "variant": "caption"
+        },
+        {
           "id": "formCard",
           "component": "SyncfusionCardView",
           "content": "formCol",
-          "cornerRadius": 14,
-          "borderWidth": 1,
-          "borderColor": "#e2e8f0"
+          "cornerRadius": 24,
+          "borderWidth": 0,
+          "backgroundColor": "#ffffffcc",
+          "padding": 24
         },
         {
           "id": "formCol",
