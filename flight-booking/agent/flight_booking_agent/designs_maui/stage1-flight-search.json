@@ -16,17 +16,16 @@
           "component": "Column",
           "padding": 24,
           "gap": 12,
-          "horizontalOptions": "Fill",
           "children": [
             "title",
             "subtitle",
-            "formCard"
+            "formContainer"
           ]
         },
         {
           "id": "title",
           "component": "Text",
-          "text": "✈ Find Your Perfect Flight",
+          "text": "✈️ Find Your Perfect Flight",
           "variant": "h3"
         },
         {
@@ -36,21 +35,10 @@
           "text": "Search premium routes, configure traveller preferences, and prepare booking details in one streamlined enterprise workflow."
         },
         {
-          "id": "formCard",
-          "component": "SyncfusionCardView",
-          "content": "formScrollArea",
-          "cornerRadius": 16,
-          "borderWidth": 1,
-          "borderColor": "#E5E7EB",
-          "backgroundColor": "#F3F0FF",
-          "heightRequest": 720
-        },
-        {
           "id": "formContainer",
           "component": "Column",
-          "padding": 18,
-          "gap": 18,
-          "horizontalOptions": "Fill",
+          "padding": 24,
+          "gap": 20,
           "children": [
             "row1",
             "row2",
@@ -58,18 +46,14 @@
             "row4",
             "row5",
             "searchBtn"
-          ]
-        },
-        {
-          "id": "formScrollArea",
-          "component": "ScrollView",
-          "heightRequest": 690,
-          "content": "formContainer"
+          ],
+          "backgroundColor": "#F6F1FA",
+          "cornerRadius": 24
         },
         {
           "id": "row1",
           "component": "Row",
-          "gap": 10,
+          "gap": 16,
           "children": [
             "tripType",
             "from",
@@ -123,7 +107,7 @@
         {
           "id": "row2",
           "component": "Row",
-          "gap": 10,
+          "gap": 16,
           "children": [
             "departureDate",
             "returnDate",
@@ -185,7 +169,7 @@
         {
           "id": "row3",
           "component": "Row",
-          "gap": 10,
+          "gap": 16,
           "children": [
             "adults",
             "children"
@@ -220,7 +204,7 @@
         {
           "id": "row4",
           "component": "Row",
-          "gap": 10,
+          "gap": 16,
           "children": [
             "firstName",
             "lastName",
@@ -257,7 +241,7 @@
         {
           "id": "row5",
           "component": "Row",
-          "gap": 10,
+          "gap": 16,
           "children": [
             "passport",
             "nationality"
@@ -283,20 +267,24 @@
           "selectedValuePath": "value",
           "options": [
             {
-              "text": "India",
-              "value": "IN"
-            },
-            {
-              "text": "Singapore",
-              "value": "SG"
-            },
-            {
               "text": "United States",
               "value": "US"
             },
             {
               "text": "United Kingdom",
               "value": "UK"
+            },
+            {
+              "text": "United Arab Emirates",
+              "value": "UAE"
+            },
+            {
+              "text": "India",
+              "value": "IN"
+            },
+            {
+              "text": "Singapore",
+              "value": "SG"
             }
           ],
           "value": {
@@ -306,9 +294,10 @@
         {
           "id": "searchBtn",
           "component": "SyncfusionButton",
-          "text": "🔍 Search Flights",
+          "text": "🔎 Search Flights",
           "heightRequest": 48,
-          "cornerRadius": 8,
+          "margin": "0,8,0,0",
+          "cornerRadius": 14,
           "background": "#2563EB",
           "textColor": "#FFFFFF",
           "fontAttributes": "Bold",
@@ -372,24 +361,37 @@
       "value": {
         "search": {
           "tripType": "roundTrip",
-          "from": "",
-          "to": "",
-          "departureDate": "",
-          "returnDate": "",
-          "cabinClass": "economy",
+          "from": "New York (JFK)",
+          "to": "London (LHR)",
+          "departureDate": "2026-09-15",
+          "returnDate": "2026-09-24",
+          "cabinClass": "business",
           "passengers": {
-            "adults": 1,
-            "children": 0
+            "adults": 2,
+            "children": 1
           }
         },
         "passenger": {
-          "firstName": "",
-          "lastName": "",
-          "email": "",
-          "passportNumber": "",
-          "nationality": ""
+          "firstName": "Alexandra",
+          "lastName": "Reed",
+          "email": "alexandra.reed@enterpriseair.com",
+          "passportNumber": "XK92PL781",
+          "nationality": "US"
         }
       }
+    }
+  },
+  {
+    "version": "v0.9",
+    "updateDataModel": {
+      "surfaceId": "workspace",
+      "path": "/_suggestions",
+      "value": [
+        "🛫 Show flight results next",
+        "💺 Add seat-class upgrades",
+        "📋 Include fare rules",
+        "🌍 Add multi-city mode"
+      ]
     }
   }
 ]

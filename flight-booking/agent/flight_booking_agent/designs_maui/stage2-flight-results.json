@@ -34,17 +34,10 @@
           "gap": 16,
           "padding": 20,
           "children": [
-            "summaryCard",
-            "resultsCard"
-          ]
-        },
-        {
-          "id": "summaryCard",
-          "component": "SyncfusionCardView",
-          "content": "summaryCol",
-          "cornerRadius": 14,
-          "borderWidth": 1,
-          "borderColor": "#e2e8f0"
+            "summaryCol",
+            "resultsCol"
+          ],
+          "backgroundColor": "#FFFFFF"
         },
         {
           "id": "summaryCol",
@@ -55,7 +48,8 @@
             "summaryTitle",
             "summarySub",
             "summaryText"
-          ]
+          ],
+          "backgroundColor": "#FFFFFF"
         },
         {
           "id": "summaryTitle",
@@ -72,17 +66,7 @@
         {
           "id": "summaryText",
           "component": "Text",
-          "text": {
-            "path": "/summaryText"
-          }
-        },
-        {
-          "id": "resultsCard",
-          "component": "SyncfusionCardView",
-          "content": "resultsCol",
-          "cornerRadius": 14,
-          "borderWidth": 1,
-          "borderColor": "#e2e8f0"
+          "text": "Round Trip • New York (JFK) → London (LHR) • Departure: 2026-09-14 • Return: 2026-09-23 • Cabin: Business • Adults: 2 • Children: 1 • Infants: 0 • Preferred Airline: Any • Non-stop Only: No"
         },
         {
           "id": "resultsCol",
@@ -93,7 +77,8 @@
             "resultsTitle",
             "resultsSub",
             "flightsGrid"
-          ]
+          ],
+          "backgroundColor": "#FFFFFF"
         },
         {
           "id": "resultsTitle",
@@ -110,9 +95,86 @@
         {
           "id": "flightsGrid",
           "component": "SyncfusionDataGrid",
-          "dataSource": {
-            "path": "/filteredFlights"
-          },
+          "dataSource": [
+            {
+              "id": 1,
+              "airline": "SkyJet Airways",
+              "flight": "SJ 201",
+              "departure": "08:15 JFK",
+              "arrival": "20:05 LHR",
+              "duration": "6h 50m",
+              "stops": "Non-stop",
+              "baggage": "2 x 23kg",
+              "rating": 4.8,
+              "price": 1840,
+              "action": "Select →"
+            },
+            {
+              "id": 2,
+              "airline": "Nimbus Air",
+              "flight": "NB 440",
+              "departure": "09:40 JFK",
+              "arrival": "22:10 LHR",
+              "duration": "7h 30m",
+              "stops": "1 Stop",
+              "baggage": "2 x 23kg",
+              "rating": 4.5,
+              "price": 1495,
+              "action": "Select →"
+            },
+            {
+              "id": 3,
+              "airline": "AeroVista",
+              "flight": "AV 118",
+              "departure": "11:20 JFK",
+              "arrival": "23:45 LHR",
+              "duration": "6h 25m",
+              "stops": "Non-stop",
+              "baggage": "1 x 23kg",
+              "rating": 4.7,
+              "price": 1990,
+              "action": "Select →"
+            },
+            {
+              "id": 4,
+              "airline": "BlueOrbit",
+              "flight": "BO 772",
+              "departure": "14:05 JFK",
+              "arrival": "03:15 LHR",
+              "duration": "7h 10m",
+              "stops": "1 Stop",
+              "baggage": "2 x 23kg",
+              "rating": 4.3,
+              "price": 1320,
+              "action": "Select →"
+            },
+            {
+              "id": 5,
+              "airline": "SkyJet Airways",
+              "flight": "SJ 245",
+              "departure": "17:30 JFK",
+              "arrival": "05:20 LHR",
+              "duration": "6h 50m",
+              "stops": "Non-stop",
+              "baggage": "2 x 32kg",
+              "rating": 4.9,
+              "price": 2140,
+              "action": "Select →"
+            },
+            {
+              "id": 6,
+              "airline": "Nimbus Air",
+              "flight": "NB 452",
+              "departure": "19:10 JFK",
+              "arrival": "07:40 LHR",
+              "duration": "7h 05m",
+              "stops": "Non-stop",
+              "baggage": "1 x 23kg",
+              "rating": 4.4,
+              "price": 1710,
+              "action": "Select →"
+            }
+          ],
           "columns": [
             {
               "field": "airline",
@@ -149,7 +211,7 @@
               "headerText": "Book now"
             }
           ],
-          "sortingMode": "none",
+          "sortingMode": "Single",
           "selectionMode": "single",
           "onRowClick": {
             "event": {
@@ -159,7 +221,9 @@
           },
           "selectedRowJson": {
             "path": "/selectedFlight"
-          }
+          },
+          "heightRequest": 420,
+          "allowSorting": false
         }
       ]
     }

@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using SkyBook.Maui.Ui;
 using Syncfusion.Maui.A2UI.Hosting;
 using Syncfusion.Maui.A2UI.SyncfusionComponents;
 using Syncfusion.Maui.Core.Hosting;
@@ -42,7 +43,7 @@ public static class MauiProgram
         builder.Services.AddTransient<MainPage>();
 
 #if DEBUG
-        builder.Logging.AddDebug();
+    builder.Logging.AddDebug();
 #endif
         return builder.Build();
     }

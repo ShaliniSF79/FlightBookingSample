@@ -14,43 +14,45 @@
         {
           "id": "root",
           "component": "Column",
-          "gap": 16,
+          "gap": 20,
           "padding": 20,
           "children": [
-            "successCard",
-            "heroCard",
-            "passengerCard"
+            "successRow",
+            "heroCol",
+            "passengerCol"
           ]
         },
         {
-          "id": "successCard",
-          "component": "SyncfusionCardView",
-          "content": "successText",
-          "cornerRadius": 10,
-          "borderWidth": 1,
-          "borderColor": "#e2e8f0",
-          "indicatorColor": "#16a34a",
-          "indicatorThickness": 6,
-          "indicatorPosition": "left"
+          "id": "successRow",
+          "component": "Row",
+          "gap": 8,
+          "padding": 0,
+          "children": [
+            "successText"
+          ]
+        },
+        {
+          "id": "successIcon",
+          "component": "Text",
+          "text": "✓",
+          "textColor": "#16A34A",
+          "fontAttributes": "Bold"
         },
         {
           "id": "successText",
           "component": "Text",
-          "text": "Booking confirmed successfully! Your e-ticket has been issued and sent to the passenger email."
+          "weight": 1,
+          "text": "✅ Booking confirmed successfully! Your e-ticket has been issued and sent to olivia.bennett@skytravels.com."
         },
         {
-          "id": "heroCard",
-          "component": "SyncfusionCardView",
-          "content": "heroCol",
-          "cornerRadius": 14,
-          "borderWidth": 1,
-          "borderColor": "#e2e8f0"
+          "id": "div1",
+          "component": "Divider"
         },
         {
           "id": "heroCol",
           "component": "Column",
-          "gap": 12,
-          "padding": 20,
+          "gap": 6,
+          "padding": 16,
           "children": [
             "heroTitle",
             "heroSub",
@@ -66,37 +68,30 @@
         {
           "id": "heroSub",
           "component": "Text",
-          "text": "Confirmation Code: ST9K4P • Round Trip • New York (JFK) ↔ Los Angeles (LAX) • 1 Adult • Dec 14 – Dec 21, 2026",
-          "variant": "caption"
+          "variant": "caption",
+          "text": "Confirmation Code: ST9K4P • Round Trip • New York (JFK) ↔ Los Angeles (LAX) • 2 Adults • Dec 14 – Dec 21, 2026"
         },
         {
           "id": "flightsRow",
           "component": "Row",
           "gap": 16,
+          "padding": 16,
           "children": [
-            "outboundCard",
-            "returnCard"
+            "outboundCol",
+            "returnCol"
           ]
-        },
-        {
-          "id": "outboundCard",
-          "component": "SyncfusionCardView",
-          "content": "outboundCol",
-          "cornerRadius": 12,
-          "borderWidth": 1,
-          "borderColor": "#e2e8f0",
-          "weight": 1
         },
         {
           "id": "outboundCol",
           "component": "Column",
-          "gap": 6,
+          "weight": 1,
+          "gap": 8,
+          "padding": 24,
           "children": [
             "outboundTitle",
             "outboundSub",
             "outboundText"
-          ],
-          "padding": 16
+          ]
         },
         {
           "id": "outboundTitle",
@@ -107,33 +102,25 @@
         {
           "id": "outboundSub",
           "component": "Text",
-          "text": "Delta Air Lines • Confirmed • DL-401",
+          "text": "Delta Air Lines • Confirmed • DL 401",
           "variant": "caption"
         },
         {
           "id": "outboundText",
           "component": "Text",
-          "text": "6:00 AM JFK → 9:15 AM LAX\nNon-Stop • 5h 15m\nSeat 12A/12B • Terminal 4\nStatus: Ticketed"
-        },
-        {
-          "id": "returnCard",
-          "component": "SyncfusionCardView",
-          "content": "returnCol",
-          "cornerRadius": 12,
-          "borderWidth": 1,
-          "borderColor": "#e2e8f0",
-          "weight": 1
+          "text": "6:00 AM JFK → 9:15 AM LAX • Non-Stop • 5h 15m\nSeat 12A/12B • Terminal 4 • Status: Ticketed"
         },
         {
           "id": "returnCol",
           "component": "Column",
-          "gap": 6,
+          "weight": 1,
+          "gap": 8,
+          "padding": 24,
           "children": [
             "returnTitle",
             "returnSub",
             "returnText"
-          ],
-          "padding": 16
+          ]
         },
         {
           "id": "returnTitle",
@@ -150,21 +137,17 @@
         {
           "id": "returnText",
           "component": "Text",
-          "text": "2:00 PM LAX → 10:30 PM JFK\n1 Stop (ORD) • 8h 30m\nSeat 12A/12B • Terminal 5\nStatus: Ticketed"
+          "text": "2:00 PM LAX → 10:30 PM JFK • 1 Stop (ORD) • 8h 30m\nSeat 12A/12B • Terminal 5 • Status: Ticketed"
         },
         {
-          "id": "passengerCard",
-          "component": "SyncfusionCardView",
-          "content": "passengerCol",
-          "cornerRadius": 14,
-          "borderWidth": 1,
-          "borderColor": "#e2e8f0"
+          "id": "div2",
+          "component": "Divider"
         },
         {
           "id": "passengerCol",
           "component": "Column",
-          "gap": 10,
-          "padding": 20,
+          "gap": 6,
+          "padding": 16,
           "children": [
             "passengerTitle",
             "passengerSub",
@@ -207,8 +190,7 @@
               "headerText": "Seat/Meal"
             }
           ],
-          "selectionMode": "none",
-          "sortingMode": "none"
+          "selectionMode": "none"
         }
       ]
     }

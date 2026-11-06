@@ -120,8 +120,12 @@ public sealed class LocalAgent(Func<string, Task<string>> loadDesign, HttpClient
         var name = Trip.S(action["name"]);
         var ctx = (JsonObject)action["context"]!;
         var trip = Trip.FromJson(ctx);
+    if (trip.TripType == "roundTrip"
+    && DateTime.TryParse(trip.DepartureDate, CultureInfo.InvariantCulture, DateTimeStyles.None, out var dep)
+    && (!DateTime.TryParse(trip.ReturnDate, CultureInfo.InvariantCulture, DateTimeStyles.None, out var rtn) || rtn <= dep))
+      trip.ReturnDate = dep.AddDays(7).ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
 
-        if (name == "searchFlights")
+    if (name == "searchFlights")
         {
             var missing = trip.MissingForSearch();
             return missing.Count > 0
@@ -293,7 +297,11 @@ public sealed class LocalAgent(Func<string, Task<string>> loadDesign, HttpClient
                 f["arrival"] = Regex.Replace(Trip.S(f["arrival"]), "[A-Z]{3}$", toCode);
             }
         }
-        return (Explain(d, say), say);
+    // Push the real trip into the components (the design may have static sample values inlined)
+    SetText(d, "summaryText",
+        $"{t.TripTypeLabel} • {t.From} → {t.To} • Departure: {t.DepartureDate}{ret} • Cabin: {t.CabinLabel} • Adults: {t.Adults} • Children: {t.Children}");
+    SetProp(d, "flightsGrid", "dataSource", FindData(d, "/filteredFlights"));
+    return (Explain(d, say), say);
     }
 
     private Task<(JsonArray, string)> ConfirmationAsync(Trip t, JsonObject chosen) =>
@@ -322,13 +330,18 @@ public sealed class LocalAgent(Func<string, Task<string>> loadDesign, HttpClient
             SetText(d, "returnSub", "One-way booking");
             SetText(d, "returnText", "No return flight on this booking.");
         }
-        SetData(d, "/passengers", new JsonArray(new JsonObject
-        {
-            ["passenger"] = $"{t.FirstName} {t.LastName}".Trim(),
-            ["email"] = t.Email, ["phone"] = "—",
-            ["passport"] = $"{t.Nationality} / {t.PassportNumber}", ["seatMeal"] = "—",
-        }));
-        return (Explain(d, say), say);
+    var passengers = new JsonArray(new JsonObject
+    {
+      ["passenger"] = $"{t.FirstName} {t.LastName}".Trim(),
+      ["email"] = t.Email,
+      ["passport"] = $"{t.Nationality} / {t.PassportNumber}",
+      ["seatMeal"] = $"Auto-assigned / Standard • {t.CabinLabel}",
+    });
+    SetData(d, "/passengers", passengers);
+    SetProp(d, "passengerGrid", "dataSource", passengers);
+    SetText(d, "successText",
+        $"✅ Booking confirmed successfully! Your e-ticket has been issued and sent to {t.Email}.");
+    return (Explain(d, say), say);
     }
 
     // ------------------------------------------------------------------ helpers
@@ -363,7 +376,14 @@ public sealed class LocalAgent(Func<string, Task<string>> loadDesign, HttpClient
                 if (Trip.S(c["id"]) == componentId) c["text"] = text;
     }
 
-    public static string Iata(string place)
+  private static void SetProp(JsonArray d, string componentId, string prop, JsonNode? value)
+  {
+    foreach (var m in d)
+      foreach (var c in (m?["updateComponents"]?["components"] as JsonArray ?? []).OfType<JsonObject>())
+        if (Trip.S(c["id"]) == componentId) c[prop] = value?.DeepClone();
+  }
+
+  public static string Iata(string place)
     {
         var m = Regex.Match(place, @"\(([A-Za-z]{3})\)");
         if (m.Success) return m.Groups[1].Value.ToUpperInvariant();
