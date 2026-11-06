@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "esnext",
+    "types": ["vite/client"],
+    "skipLibCheck": true,
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "experimentalDecorators": true,
+    "useDefineForClassFields": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@a2ui/web_core/v0_9": ["./node_modules/@a2ui/web_core/src/v0_9/index.d.ts"],
+      "@a2ui/web_core/v0_9/*": ["./node_modules/@a2ui/web_core/src/v0_9/*"],
+      "@a2ui/react/v0_9": ["./node_modules/@a2ui/react/v0_9/index.d.ts"],
+      "@a2ui/react/v0_9/*": ["./node_modules/@a2ui/react/v0_9/*"]
+    }
+  },
+  "include": ["src", "vite.config.ts"]
+}

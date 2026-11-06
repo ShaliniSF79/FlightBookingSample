@@ -1,0 +1,252 @@
+[
+  {
+    "version": "v0.9",
+    "createSurface": {
+      "surfaceId": "workspace",
+      "catalogId": "syncfusion-maui"
+    }
+  },
+  {
+    "version": "v0.9",
+    "updateComponents": {
+      "surfaceId": "workspace",
+      "components": [
+        {
+          "id": "root",
+          "component": "Column",
+          "gap": 16,
+          "padding": 20,
+          "children": [
+            "successCard",
+            "heroCard",
+            "passengerCard"
+          ]
+        },
+        {
+          "id": "successCard",
+          "component": "SyncfusionCardView",
+          "content": "successText",
+          "cornerRadius": 10,
+          "borderWidth": 1,
+          "borderColor": "#e2e8f0",
+          "indicatorColor": "#16a34a",
+          "indicatorThickness": 6,
+          "indicatorPosition": "left"
+        },
+        {
+          "id": "successText",
+          "component": "Text",
+          "text": "Booking confirmed successfully! Your e-ticket has been issued and sent to the passenger email."
+        },
+        {
+          "id": "heroCard",
+          "component": "SyncfusionCardView",
+          "content": "heroCol",
+          "cornerRadius": 14,
+          "borderWidth": 1,
+          "borderColor": "#e2e8f0"
+        },
+        {
+          "id": "heroCol",
+          "component": "Column",
+          "gap": 12,
+          "padding": 20,
+          "children": [
+            "heroTitle",
+            "heroSub",
+            "flightsRow"
+          ]
+        },
+        {
+          "id": "heroTitle",
+          "component": "Text",
+          "text": "Booking Details",
+          "variant": "h4"
+        },
+        {
+          "id": "heroSub",
+          "component": "Text",
+          "text": "Confirmation Code: ST9K4P • Round Trip • New York (JFK) ↔ Los Angeles (LAX) • 1 Adult • Dec 14 – Dec 21, 2026",
+          "variant": "caption"
+        },
+        {
+          "id": "flightsRow",
+          "component": "Row",
+          "gap": 16,
+          "children": [
+            "outboundCard",
+            "returnCard"
+          ]
+        },
+        {
+          "id": "outboundCard",
+          "component": "SyncfusionCardView",
+          "content": "outboundCol",
+          "cornerRadius": 12,
+          "borderWidth": 1,
+          "borderColor": "#e2e8f0",
+          "weight": 1
+        },
+        {
+          "id": "outboundCol",
+          "component": "Column",
+          "gap": 6,
+          "children": [
+            "outboundTitle",
+            "outboundSub",
+            "outboundText"
+          ],
+          "padding": 16
+        },
+        {
+          "id": "outboundTitle",
+          "component": "Text",
+          "text": "Outbound",
+          "variant": "h4"
+        },
+        {
+          "id": "outboundSub",
+          "component": "Text",
+          "text": "Delta Air Lines • Confirmed • DL-401",
+          "variant": "caption"
+        },
+        {
+          "id": "outboundText",
+          "component": "Text",
+          "text": "6:00 AM JFK → 9:15 AM LAX\nNon-Stop • 5h 15m\nSeat 12A/12B • Terminal 4\nStatus: Ticketed"
+        },
+        {
+          "id": "returnCard",
+          "component": "SyncfusionCardView",
+          "content": "returnCol",
+          "cornerRadius": 12,
+          "borderWidth": 1,
+          "borderColor": "#e2e8f0",
+          "weight": 1
+        },
+        {
+          "id": "returnCol",
+          "component": "Column",
+          "gap": 6,
+          "children": [
+            "returnTitle",
+            "returnSub",
+            "returnText"
+          ],
+          "padding": 16
+        },
+        {
+          "id": "returnTitle",
+          "component": "Text",
+          "text": "Return",
+          "variant": "h4"
+        },
+        {
+          "id": "returnSub",
+          "component": "Text",
+          "text": "American Airlines • Confirmed • AA 839",
+          "variant": "caption"
+        },
+        {
+          "id": "returnText",
+          "component": "Text",
+          "text": "2:00 PM LAX → 10:30 PM JFK\n1 Stop (ORD) • 8h 30m\nSeat 12A/12B • Terminal 5\nStatus: Ticketed"
+        },
+        {
+          "id": "passengerCard",
+          "component": "SyncfusionCardView",
+          "content": "passengerCol",
+          "cornerRadius": 14,
+          "borderWidth": 1,
+          "borderColor": "#e2e8f0"
+        },
+        {
+          "id": "passengerCol",
+          "component": "Column",
+          "gap": 10,
+          "padding": 20,
+          "children": [
+            "passengerTitle",
+            "passengerSub",
+            "passengerGrid"
+          ]
+        },
+        {
+          "id": "passengerTitle",
+          "component": "Text",
+          "text": "Passenger Information",
+          "variant": "h4"
+        },
+        {
+          "id": "passengerSub",
+          "component": "Text",
+          "text": "Issued passengers and travel details",
+          "variant": "caption"
+        },
+        {
+          "id": "passengerGrid",
+          "component": "SyncfusionDataGrid",
+          "dataSource": {
+            "path": "/passengers"
+          },
+          "columns": [
+            {
+              "field": "passenger",
+              "headerText": "Passenger"
+            },
+            {
+              "field": "email",
+              "headerText": "Email"
+            },
+            {
+              "field": "passport",
+              "headerText": "Nationality/Passport"
+            },
+            {
+              "field": "seatMeal",
+              "headerText": "Seat/Meal"
+            }
+          ],
+          "selectionMode": "none",
+          "sortingMode": "none"
+        }
+      ]
+    }
+  },
+  {
+    "version": "v0.9",
+    "updateDataModel": {
+      "surfaceId": "workspace",
+      "path": "/passengers",
+      "value": [
+        {
+          "passenger": "Olivia Bennett",
+          "email": "olivia.bennett@skytravels.com",
+          "phone": "+1 (917) 555-0142",
+          "passport": "USA / XJ482991",
+          "seatMeal": "12A / Vegetarian"
+        },
+        {
+          "passenger": "Ethan Carter",
+          "email": "ethan.carter@skytravels.com",
+          "phone": "+1 (646) 555-0189",
+          "passport": "USA / QP773104",
+          "seatMeal": "12B / Standard"
+        }
+      ]
+    }
+  },
+  {
+    "version": "v0.9",
+    "updateDataModel": {
+      "surfaceId": "workspace",
+      "path": "/_suggestions",
+      "value": [
+        "🎟️ Add e-ticket download",
+        "🧳 Show baggage allowance",
+        "📍 Add terminal and gate details",
+        "📅 Add return trip to calendar"
+      ]
+    }
+  }
+]

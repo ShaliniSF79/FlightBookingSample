@@ -1,0 +1,395 @@
+[
+  {
+    "version": "v0.9",
+    "createSurface": {
+      "surfaceId": "workspace",
+      "catalogId": "syncfusion-maui"
+    }
+  },
+  {
+    "version": "v0.9",
+    "updateComponents": {
+      "surfaceId": "workspace",
+      "components": [
+        {
+          "id": "root",
+          "component": "Column",
+          "padding": 24,
+          "gap": 12,
+          "horizontalOptions": "Fill",
+          "children": [
+            "title",
+            "subtitle",
+            "formCard"
+          ]
+        },
+        {
+          "id": "title",
+          "component": "Text",
+          "text": "✈ Find Your Perfect Flight",
+          "variant": "h3"
+        },
+        {
+          "id": "subtitle",
+          "component": "Text",
+          "variant": "caption",
+          "text": "Search premium routes, configure traveller preferences, and prepare booking details in one streamlined enterprise workflow."
+        },
+        {
+          "id": "formCard",
+          "component": "SyncfusionCardView",
+          "content": "formScrollArea",
+          "cornerRadius": 16,
+          "borderWidth": 1,
+          "borderColor": "#E5E7EB",
+          "backgroundColor": "#F3F0FF",
+          "heightRequest": 720
+        },
+        {
+          "id": "formContainer",
+          "component": "Column",
+          "padding": 18,
+          "gap": 18,
+          "horizontalOptions": "Fill",
+          "children": [
+            "row1",
+            "row2",
+            "row3",
+            "row4",
+            "row5",
+            "searchBtn"
+          ]
+        },
+        {
+          "id": "formScrollArea",
+          "component": "ScrollView",
+          "heightRequest": 690,
+          "content": "formContainer"
+        },
+        {
+          "id": "row1",
+          "component": "Row",
+          "gap": 10,
+          "children": [
+            "tripType",
+            "from",
+            "to"
+          ]
+        },
+        {
+          "id": "tripType",
+          "component": "SyncfusionComboBox",
+          "weight": 1,
+          "label": "Trip Type",
+          "displayMemberPath": "text",
+          "textMemberPath": "text",
+          "selectedValuePath": "value",
+          "options": [
+            {
+              "text": "Round Trip",
+              "value": "roundTrip"
+            },
+            {
+              "text": "One Way",
+              "value": "oneWay"
+            },
+            {
+              "text": "Multi City",
+              "value": "multiCity"
+            }
+          ],
+          "value": {
+            "path": "/search/tripType"
+          }
+        },
+        {
+          "id": "from",
+          "component": "TextField",
+          "weight": 1,
+          "label": "From",
+          "value": {
+            "path": "/search/from"
+          }
+        },
+        {
+          "id": "to",
+          "component": "TextField",
+          "weight": 1,
+          "label": "To",
+          "value": {
+            "path": "/search/to"
+          }
+        },
+        {
+          "id": "row2",
+          "component": "Row",
+          "gap": 10,
+          "children": [
+            "departureDate",
+            "returnDate",
+            "cabinClass"
+          ]
+        },
+        {
+          "id": "departureDate",
+          "component": "DateTimeInput",
+          "weight": 1,
+          "label": "Departure Date",
+          "enableDate": true,
+          "enableTime": false,
+          "value": {
+            "path": "/search/departureDate"
+          }
+        },
+        {
+          "id": "returnDate",
+          "component": "DateTimeInput",
+          "weight": 1,
+          "label": "Return Date",
+          "enableDate": true,
+          "enableTime": false,
+          "value": {
+            "path": "/search/returnDate"
+          }
+        },
+        {
+          "id": "cabinClass",
+          "component": "SyncfusionComboBox",
+          "weight": 1,
+          "label": "Cabin Class",
+          "displayMemberPath": "text",
+          "textMemberPath": "text",
+          "selectedValuePath": "value",
+          "options": [
+            {
+              "text": "Economy",
+              "value": "economy"
+            },
+            {
+              "text": "Premium Economy",
+              "value": "premiumEconomy"
+            },
+            {
+              "text": "Business",
+              "value": "business"
+            },
+            {
+              "text": "First Class",
+              "value": "first"
+            }
+          ],
+          "value": {
+            "path": "/search/cabinClass"
+          }
+        },
+        {
+          "id": "row3",
+          "component": "Row",
+          "gap": 10,
+          "children": [
+            "adults",
+            "children"
+          ]
+        },
+        {
+          "id": "adults",
+          "component": "SyncfusionNumericEntry",
+          "weight": 1,
+          "label": "Adults",
+          "minimum": 1,
+          "maximum": 9,
+          "allowNull": false,
+          "showUpDownButton": true,
+          "value": {
+            "path": "/search/passengers/adults"
+          }
+        },
+        {
+          "id": "children",
+          "component": "SyncfusionNumericEntry",
+          "weight": 1,
+          "label": "Children",
+          "minimum": 0,
+          "maximum": 8,
+          "allowNull": false,
+          "showUpDownButton": true,
+          "value": {
+            "path": "/search/passengers/children"
+          }
+        },
+        {
+          "id": "row4",
+          "component": "Row",
+          "gap": 10,
+          "children": [
+            "firstName",
+            "lastName",
+            "email"
+          ]
+        },
+        {
+          "id": "firstName",
+          "component": "TextField",
+          "weight": 1,
+          "label": "Traveller First Name",
+          "value": {
+            "path": "/passenger/firstName"
+          }
+        },
+        {
+          "id": "lastName",
+          "component": "TextField",
+          "weight": 1,
+          "label": "Traveller Last Name",
+          "value": {
+            "path": "/passenger/lastName"
+          }
+        },
+        {
+          "id": "email",
+          "component": "TextField",
+          "weight": 1,
+          "label": "Contact Email",
+          "value": {
+            "path": "/passenger/email"
+          }
+        },
+        {
+          "id": "row5",
+          "component": "Row",
+          "gap": 10,
+          "children": [
+            "passport",
+            "nationality"
+          ]
+        },
+        {
+          "id": "passport",
+          "component": "SyncfusionMaskedEntry",
+          "weight": 1,
+          "label": "Passport Number",
+          "mask": "AAAAAAAAA",
+          "value": {
+            "path": "/passenger/passportNumber"
+          }
+        },
+        {
+          "id": "nationality",
+          "component": "SyncfusionComboBox",
+          "weight": 1,
+          "label": "Nationality",
+          "displayMemberPath": "text",
+          "textMemberPath": "text",
+          "selectedValuePath": "value",
+          "options": [
+            {
+              "text": "India",
+              "value": "IN"
+            },
+            {
+              "text": "Singapore",
+              "value": "SG"
+            },
+            {
+              "text": "United States",
+              "value": "US"
+            },
+            {
+              "text": "United Kingdom",
+              "value": "UK"
+            }
+          ],
+          "value": {
+            "path": "/passenger/nationality"
+          }
+        },
+        {
+          "id": "searchBtn",
+          "component": "SyncfusionButton",
+          "text": "🔍 Search Flights",
+          "heightRequest": 48,
+          "cornerRadius": 8,
+          "background": "#2563EB",
+          "textColor": "#FFFFFF",
+          "fontAttributes": "Bold",
+          "horizontalOptions": "Fill",
+          "onClick": {
+            "event": {
+              "name": "searchFlights",
+              "sourceComponentId": "searchBtn",
+              "context": {
+                "tripType": {
+                  "path": "/search/tripType"
+                },
+                "from": {
+                  "path": "/search/from"
+                },
+                "to": {
+                  "path": "/search/to"
+                },
+                "departureDate": {
+                  "path": "/search/departureDate"
+                },
+                "returnDate": {
+                  "path": "/search/returnDate"
+                },
+                "cabinClass": {
+                  "path": "/search/cabinClass"
+                },
+                "adults": {
+                  "path": "/search/passengers/adults"
+                },
+                "children": {
+                  "path": "/search/passengers/children"
+                },
+                "firstName": {
+                  "path": "/passenger/firstName"
+                },
+                "lastName": {
+                  "path": "/passenger/lastName"
+                },
+                "email": {
+                  "path": "/passenger/email"
+                },
+                "passportNumber": {
+                  "path": "/passenger/passportNumber"
+                },
+                "nationality": {
+                  "path": "/passenger/nationality"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "version": "v0.9",
+    "updateDataModel": {
+      "surfaceId": "workspace",
+      "path": "/",
+      "value": {
+        "search": {
+          "tripType": "roundTrip",
+          "from": "",
+          "to": "",
+          "departureDate": "",
+          "returnDate": "",
+          "cabinClass": "economy",
+          "passengers": {
+            "adults": 1,
+            "children": 0
+          }
+        },
+        "passenger": {
+          "firstName": "",
+          "lastName": "",
+          "email": "",
+          "passportNumber": "",
+          "nationality": ""
+        }
+      }
+    }
+  }
+]
