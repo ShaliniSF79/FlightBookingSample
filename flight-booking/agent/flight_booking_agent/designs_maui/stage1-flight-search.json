@@ -20,7 +20,7 @@
             "subtitle",
             "formCard"
           ],
-          "padding": 20
+          "padding": 24
         },
         {
           "id": "title",
@@ -37,22 +37,16 @@
         {
           "id": "formCard",
           "component": "SyncfusionCardView",
-          "content": "formScrollArea",
-          "cornerRadius": 18,
-          "borderWidth": 0,
-          "backgroundColor": "#f3f0ff",
-          "padding": 18
-        },
-        {
-          "id": "formScrollArea",
-          "component": "ScrollView",
-          "heightRequest": 1200,
-          "content": "formCol"
+          "content": "formCol",
+          "cornerRadius": 16,
+          "borderWidth": 1,
+          "borderColor": "#e5e7eb",
+          "backgroundColor": "#ffffff"
         },
         {
           "id": "formCol",
           "component": "Column",
-          "gap": 14,
+          "gap": 16,
           "children": [
             "row1",
             "row2",
@@ -61,7 +55,7 @@
             "row5",
             "searchBtn"
           ],
-          "padding": 0
+          "padding": 24
         },
         {
           "id": "row1",
@@ -358,7 +352,8 @@
                 }
               }
             }
-          }
+          },
+          "heightRequest": 48
         }
       ]
     }
@@ -370,14 +365,14 @@
       "path": "/",
       "value": {
         "search": {
-          "tripType": "roundTrip",
-          "from": "New York (JFK)",
-          "to": "London (LHR)",
-          "departureDate": "2026-09-15",
-          "returnDate": "2026-09-24",
-          "cabinClass": "business",
+          "tripType": "",
+          "from": "",
+          "to": "",
+          "departureDate": "",
+          "returnDate": "",
+          "cabinClass": "",
           "passengers": {
-            "adults": 0,
+            "adults": 1,
             "children": 0
           }
         },
