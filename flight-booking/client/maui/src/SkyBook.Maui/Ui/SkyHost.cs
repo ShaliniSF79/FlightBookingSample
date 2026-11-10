@@ -23,7 +23,8 @@ public static class SkyHost
     {
         new SkyColumnRenderer(), new SkyRowRenderer(), new SkyTextRenderer(), new SkyAppBarRenderer(),
         new A2uiFlightGridRenderer(),
-        new SkyCardRenderer(),          // ← add this line: white bordered cards, no tint
+        new SkyCardRenderer(),
+        new ColoredTextRenderer(new SkyTextRenderer()),   // ← add this line
         new A2uiScrollViewRenderer(),
     })
       renderers[r.ComponentName] = r;

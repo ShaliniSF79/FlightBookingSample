@@ -6,7 +6,22 @@ using System.Text.RegularExpressions;
 
 namespace SkyBook.Core;
 
-public sealed record AzureOpenAiOptions(string Endpoint, string ApiKey, string Deployment, string ApiVersion = "2024-10-21");
+public sealed record AzureOpenAiOptions(string Endpoint, string ApiKey, string Deployment, string ApiVersion = "2024-10-21")
+{
+  /// <summary>Marker used in <see cref="ApiVersion"/> for OpenAI-compatible endpoints (OpenRouter, OpenAI).</summary>
+  public const string OpenAiCompatible = "openai-compatible";
+
+  /// <summary>OpenRouter (same provider as the Python/Blazor agent). <paramref name="model"/> is e.g. "google/gemini-3.1-flash-lite".</summary>
+  public static AzureOpenAiOptions OpenRouter(string apiKey, string model) =>
+      new("https://openrouter.ai/api/v1", apiKey, model, OpenAiCompatible);
+
+  /// <summary>True for OpenRouter / OpenAI endpoints (Bearer auth, model in body) — detected from the URL too,
+  /// so an OpenRouter endpoint put into the Azure config section also works.</summary>
+  public bool IsOpenAiCompatible =>
+      ApiVersion == OpenAiCompatible
+      || Endpoint.Contains("openrouter.ai", StringComparison.OrdinalIgnoreCase)
+      || Endpoint.Contains("api.openai.com", StringComparison.OrdinalIgnoreCase);
+}
 
 /// <summary>Flat trip/traveller inputs (same keys the search form's action context uses).</summary>
 public sealed class Trip
@@ -301,13 +316,34 @@ public sealed class LocalAgent(Func<string, Task<string>> loadDesign, HttpClient
       ["temperature"] = 0,
       ["response_format"] = new JsonObject { ["type"] = "json_object" },
     };
-    var url = $"{ai!.Endpoint.TrimEnd('/')}/openai/deployments/{Uri.EscapeDataString(ai.Deployment)}/chat/completions?api-version={ai.ApiVersion}";
+    var apiKey = ai!.ApiKey?.Trim() ?? "";
+    if (apiKey.Length == 0 || apiKey.StartsWith("your-", StringComparison.OrdinalIgnoreCase))
+      throw new InvalidOperationException("The AI API key is empty. Put your OpenRouter key (sk-or-...) in AzureOpenAiOptions.OpenRouter(...) / AppConfig.");
+
+    string url;
+    if (ai.IsOpenAiCompatible)
+    {
+      body["model"] = ai.Deployment;                      // OpenRouter / OpenAI: model goes in the body
+      var baseUrl = ai.Endpoint.TrimEnd('/');
+      if (baseUrl.Contains("openrouter.ai", StringComparison.OrdinalIgnoreCase) && !baseUrl.EndsWith("/api/v1", StringComparison.OrdinalIgnoreCase))
+        baseUrl = "https://openrouter.ai/api/v1";
+      url = $"{baseUrl}/chat/completions";
+    }
+    else
+      url = $"{ai.Endpoint.TrimEnd('/')}/openai/deployments/{Uri.EscapeDataString(ai.Deployment)}/chat/completions?api-version={ai.ApiVersion}";
+
     using var req = new HttpRequestMessage(HttpMethod.Post, url) { Content = new StringContent(body.ToJsonString(), Encoding.UTF8, "application/json") };
-    req.Headers.Add("api-key", ai.ApiKey);
+    if (ai.IsOpenAiCompatible)
+    {
+      req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
+      req.Headers.Add("X-Title", "SkyBook MAUI");         // optional, shows the app name on OpenRouter
+    }
+    else
+      req.Headers.Add("api-key", apiKey);
     using var res = await http.SendAsync(req, ct);
     var payload = await res.Content.ReadAsStringAsync(ct);
     if (!res.IsSuccessStatusCode)
-      throw new InvalidOperationException($"Azure OpenAI request failed ({(int)res.StatusCode}): {Truncate(payload, 200)}");
+      throw new InvalidOperationException($"AI request failed ({(int)res.StatusCode}): {Truncate(payload, 200)}");
     var content = JsonNode.Parse(payload)?["choices"]?[0]?["message"]?["content"]?.GetValue<string>();
     return content is null ? null : JsonNode.Parse(content) as JsonObject;
   }
@@ -343,7 +379,33 @@ public sealed class LocalAgent(Func<string, Task<string>> loadDesign, HttpClient
         ["nationality"] = NationalityLabel(t.Nationality),
       },
     });
+    // Dropdowns: also give the selected position and text directly on the component
+    SelectOption(d, "tripType", t.TripTypeLabel);
+    SelectOption(d, "cabinClass", t.CabinLabel);
+    SelectOption(d, "nationality", NationalityLabel(t.Nationality));
     return Explain(d, say);
+  }
+
+  /// <summary>Sets selectedIndex / selectedItem / text on a combo box so it shows the value even if the
+  /// renderer ignores the bound value.</summary>
+  private static void SelectOption(JsonArray d, string id, string text)
+  {
+    foreach (var m in d)
+      foreach (var c in (m?["updateComponents"]?["components"] as JsonArray ?? []).OfType<JsonObject>())
+      {
+        if (Trip.S(c["id"]) != id || c["options"] is not JsonArray opts) continue;
+        var i = -1;
+        for (var n = 0; n < opts.Count; n++)
+        {
+          var o = opts[n];
+          if (string.Equals(Trip.S(o?["text"]), text, StringComparison.OrdinalIgnoreCase)
+              || string.Equals(Trip.S(o?["value"]), text, StringComparison.OrdinalIgnoreCase)) { i = n; break; }
+        }
+        if (i < 0) continue;
+        c["selectedIndex"] = i;
+        c["selectedItem"] = opts[i]!.DeepClone();
+        c["text"] = Trip.S(opts[i]!["text"]);
+      }
   }
 
   private async Task<(JsonArray, string)> ResultsAsync(Trip t, string say)

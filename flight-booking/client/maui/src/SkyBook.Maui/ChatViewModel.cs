@@ -11,8 +11,8 @@ public sealed class ChatViewModel : INotifyPropertyChanged
   public ChatViewModel()
   {
     CurrentUser = new Author { Name = "You" };
-    Bot = new Author { Name = "SkyBook Assistant" }; // set Avatar = "your_icon.png" to show an image
-    TypingIndicator = new ChatTypingIndicator { Authors = [Bot], Text = "SkyBook is typing…" };
+    Bot = new Author { Name = "SkyBook Assistant", Avatar = "skybook_ai.png" }; // AI icon (Resources/Images)
+    TypingIndicator = new ChatTypingIndicator { Authors = [Bot], Text = "SkyBook is typing..." };
   }
 
   public ObservableCollection<object> Messages { get; } = [];

@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using SkyBook.Core;
 using SkyBook.Maui.Ui;
 using Syncfusion.Maui.A2UI.Hosting;
 using Syncfusion.Maui.A2UI.SyncfusionComponents;
@@ -18,33 +19,42 @@ public static class MauiProgram
         return await reader.ReadToEndAsync();
     }
 
-    public static MauiApp CreateMauiApp()
-    {
-        if (AppConfig.SyncfusionLicenseKey.Length > 0)
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(AppConfig.SyncfusionLicenseKey);
+  public static MauiApp CreateMauiApp()
+  {
+    if (AppConfig.SyncfusionLicenseKey.Length > 0)
+      Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(AppConfig.SyncfusionLicenseKey);
 
-        var builder = MauiApp.CreateBuilder();
-        builder
-            .UseMauiApp<App>()
-            .ConfigureSyncfusionCore()
-            .ConfigureFonts(fonts =>
-            {
-                fonts.AddFont("Roboto-Regular.ttf", "RobotoRegular");
-                fonts.AddFont("Roboto-Medium.ttf", "RobotoMedium");
-                fonts.AddFont("Roboto-Bold.ttf", "RobotoBold");
-            });
+    var builder = MauiApp.CreateBuilder();
+    builder
+        .UseMauiApp<App>()
+        .ConfigureSyncfusionCore()
+        .ConfigureFonts(fonts =>
+        {
+          fonts.AddFont("Roboto-Regular.ttf", "RobotoRegular");
+          fonts.AddFont("Roboto-Medium.ttf", "RobotoMedium");
+          fonts.AddFont("Roboto-Bold.ttf", "RobotoBold");
+        });
 
-        builder.Services.AddSingleton(_ => SkyBook.Maui.Ui.SkyHost.Create(CatalogId));
-        builder.Services.AddSingleton(_ => new HttpClient { Timeout = TimeSpan.FromMinutes(3) });
-        builder.Services.AddSingleton<SkyBook.Core.IAgentClient>(sp => AppConfig.RemoteAgentUrl is { } remote
-            ? new SkyBook.Core.AgentClient(sp.GetRequiredService<HttpClient>(), remote)
-            : new SkyBook.Core.LocalAgent(LoadDesignAsync, sp.GetRequiredService<HttpClient>(), AppConfig.AzureOpenAi));
-        builder.Services.AddSingleton<SkyBook.Core.BookingSession>();
-        builder.Services.AddTransient<MainPage>();
+    SkyBook.Maui.BorderlessEditor.Register();
+
+    var ai = new SkyBook.Core.AzureOpenAiOptions(
+    Endpoint: "Your EndPoint", 
+    ApiKey: "Include API Key",                                
+    Deployment: "gpt-4o");                                       
+
+    builder.Services.AddSingleton(_ => SkyBook.Maui.Ui.SkyHost.Create(CatalogId));
+    builder.Services.AddSingleton(_ => new HttpClient { Timeout = TimeSpan.FromMinutes(3) });
+
+    builder.Services.AddSingleton<SkyBook.Core.IAgentClient>(sp => AppConfig.RemoteAgentUrl is { } remote
+        ? new SkyBook.Core.AgentClient(sp.GetRequiredService<HttpClient>(), remote)
+        : new SkyBook.Core.LocalAgent(LoadDesignAsync, sp.GetRequiredService<HttpClient>(), ai));
+
+    builder.Services.AddSingleton<SkyBook.Core.BookingSession>();
+    builder.Services.AddTransient<MainPage>();
 
 #if DEBUG
     builder.Logging.AddDebug();
 #endif
-        return builder.Build();
-    }
+    return builder.Build();
+  }
 }

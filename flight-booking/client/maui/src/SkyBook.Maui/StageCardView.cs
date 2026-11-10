@@ -70,7 +70,7 @@ public sealed class StageCardView : Border
                 new Label { Text = $"{stage.Cta} →", FontSize = 13, FontAttributes = FontAttributes.Bold, TextColor = Color.FromArgb("#2563eb"), Margin = new Thickness(0, 6, 0, 0) },
             },
         };
-        // React: 3px brand-gradient strip along the top edge of each card.
+        
         Content = new Grid
         {
             RowDefinitions = [new(GridLength.Auto), new(GridLength.Star)],

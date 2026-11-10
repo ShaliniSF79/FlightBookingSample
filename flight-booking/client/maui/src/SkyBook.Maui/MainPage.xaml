@@ -100,13 +100,13 @@
                     <Label Text="Ask SkyBook to…" FontSize="15" FontAttributes="Bold" TextColor="{StaticResource CInk}" VerticalOptions="Center" />
                   </HorizontalStackLayout>
                   <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
-                    <Border StrokeShape="RoundRectangle 10" Stroke="{StaticResource CLine}" BackgroundColor="White" Padding="10,2">
-                      <Editor x:Name="WelcomeEditor" AutoSize="TextChanges" MaximumHeightRequest="140" MinimumHeightRequest="44"
+                    <Border StrokeShape="RoundRectangle 10" Stroke="{StaticResource CLine}" BackgroundColor="White" Padding="10,10,0,0">
+                      <Editor x:Name="WelcomeEditor" StyleId="Borderless" BackgroundColor="Transparent" AutoSize="TextChanges" MaximumHeightRequest="140" MinimumHeightRequest="44"
                                                     Placeholder="Try: &quot;Find me a flight from New York to London next Friday&quot;"
                                                     TextChanged="OnWelcomeTextChanged" Completed="OnWelcomeSend" AutomationId="welcome-input" />
                     </Border>
                     <Button x:Name="WelcomeSendButton" Grid.Column="1" Text="Ask SkyBook" Clicked="OnWelcomeSend"
-                                                BackgroundColor="{StaticResource CPrimary}" TextColor="White" CornerRadius="8" IsEnabled="False" VerticalOptions="Start" HeightRequest="46"
+                                                BackgroundColor="{StaticResource CPrimary}" TextColor="White" CornerRadius="8" IsEnabled="False" VerticalOptions="Start" HeightRequest="52"
                                                 AutomationId="welcome-send" />
                   </Grid>
                 </VerticalStackLayout>

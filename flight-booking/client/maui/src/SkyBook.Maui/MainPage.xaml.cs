@@ -53,7 +53,7 @@ public partial class MainPage : ContentPage
 
     SurfaceView.Host = _host;
     _host.SurfaceCreated += (_, s) => MainThread.BeginInvokeOnMainThread(() => SetSurface(s));
-    _host.SurfaceUpdated += (_, s) => MainThread.BeginInvokeOnMainThread(() => { if (_surface?.Id == s.Id) UpdateStep(); });
+    _host.SurfaceUpdated += (_, s) => MainThread.BeginInvokeOnMainThread(() => { if (_surface?.Id == s.Id) { UpdateStep(); Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(250), NormalizeInputs); } });
     _host.SurfaceDeleted += (_, id) => MainThread.BeginInvokeOnMainThread(() => { if (_surface?.Id == id) SetSurface(null); });
     _host.ActionDispatched += (_, a) => MainThread.BeginInvokeOnMainThread(() => OnSurfaceAction(a));
     Ui.SkyHost.BookRequested += row => MainThread.BeginInvokeOnMainThread(() => OnBookRow(row));
@@ -111,8 +111,31 @@ public partial class MainPage : ContentPage
         VerticalOptions = LayoutOptions.Fill,
       };
       _stageCards.Add(card);
+      card.SizeChanged += (_, _) => FitCardText(card);
     }
     ArrangeStageCards(3);
+  }
+
+  /// <summary>
+  /// Keeps every line of text inside its stage card: labels wrap instead of running past the border.
+  /// Labels inside horizontal rows (e.g. "✓ Review traveler details…") get a max width so they can wrap too.
+  /// </summary>
+  private static void FitCardText(Border card)
+  {
+    if (card.Width <= 0) return;
+    var inner = card.Width - card.Padding.HorizontalThickness - card.StrokeThickness * 2;
+    foreach (var label in ((IVisualTreeElement)card).GetVisualTreeDescendants().OfType<Label>())
+    {
+      label.LineBreakMode = LineBreakMode.WordWrap;
+      label.MaxLines = -1;
+      if (label.Parent is HorizontalStackLayout row)
+      {
+        // room left after the other items in the row (icon, spacing)
+        var others = row.Children.OfType<VisualElement>().Where(c => c != label).Sum(c => c.Width + row.Spacing);
+        var max = Math.Max(60, inner - others - 8);
+        if (Math.Abs(label.MaximumWidthRequest - max) > 1) label.MaximumWidthRequest = max;
+      }
+    }
   }
 
   private int _cardColumns;
@@ -268,8 +291,15 @@ public partial class MainPage : ContentPage
     ChatPane.IsVisible = welcome || !_compact || _tab == Tab.Chat;
     MobileTabs.IsVisible = !welcome && _compact;
 
-    ChatColumn.Width = welcome || _compact ? GridLength.Star : new GridLength(420);
-    SurfaceColumn.Width = welcome || _compact ? new GridLength(0) : GridLength.Star;
+    // Columns: welcome = chat only; wide = chat 420 + booking; phone = whichever tab is selected, full width.
+    var showBooking = !welcome && _compact && _tab == Tab.Booking;
+    ChatColumn.Width = welcome ? GridLength.Star
+        : _compact ? (showBooking ? new GridLength(0) : GridLength.Star)
+        : new GridLength(420);
+    SurfaceColumn.Width = welcome ? new GridLength(0)
+        : _compact ? (showBooking ? GridLength.Star : new GridLength(0))
+        : GridLength.Star;
+    Body.ColumnSpacing = _compact || welcome ? 0 : 20;
     ChatPane.MinimumWidthRequest = welcome || _compact ? 0 : 420;
 
     foreach (var b in _placeholderButtons) b.IsEnabled = !_busy;
@@ -340,8 +370,88 @@ public partial class MainPage : ContentPage
     if (shown is not null) StagePillLabel.Text = $"{shown.Icon}  Step {shown.Step} · {shown.Title}";
   }
 
+  /// <summary>
+  /// Gives every form input on the rendered page the same height (48) and full column width.
+  /// The stock A2UI input renderers ignore heightRequest in the JSON, so we fix it after rendering.
+  /// </summary>
+  private void NormalizeInputs()
+  {
+    SelectComboValues();
+    static IEnumerable<Element> Walk(IVisualTreeElement e)
+    {
+      foreach (var c in e.GetVisualChildren())
+      {
+        if (c is Element el) yield return el;
+        foreach (var d in Walk(c)) yield return d;
+      }
+    }
+    string[] inputTypes = ["SfComboBox", "SfNumericEntry", "SfMaskedEntry", "SfDatePicker", "DatePicker", "Entry", "SfTextInputLayout"];
+    foreach (var v in Walk(SurfaceView).OfType<Microsoft.Maui.Controls.View>())
+    {
+      var name = v.GetType().Name;
+      if (!inputTypes.Contains(name)) continue;
+      if (v.Parent is Microsoft.Maui.Controls.View p && inputTypes.Contains(p.GetType().Name)) continue; // inner part of another input
+      v.HeightRequest = 48;
+      v.MinimumHeightRequest = 48;
+      v.HorizontalOptions = LayoutOptions.Fill;
+      v.VerticalOptions = LayoutOptions.Start;
+    }
+  }
+
+  /// <summary>
+  /// The stock combo-box renderer doesn't pick its selection from the data model, so after a page renders we
+  /// select Trip Type / Cabin Class / Nationality ourselves from the values the agent put in the model.
+  /// Selecting also triggers the combo's own change logic, so Search Flights sends these values.
+  /// </summary>
+  private void SelectComboValues()
+  {
+    if (_surface is null) return;
+    var wanted = new[] { "/search/tripType", "/search/cabinClass", "/passenger/nationality" }
+        .Select(p => { try { return Convert.ToString(_surface.DataModel.Get(p))?.Trim('"') ?? ""; } catch { return ""; } })
+        .Where(v => v.Length > 0).ToList();
+    if (wanted.Count == 0) return;
+
+    static IEnumerable<Element> Walk(IVisualTreeElement e)
+    {
+      foreach (var c in e.GetVisualChildren())
+      {
+        if (c is Element el) yield return el;
+        foreach (var d in Walk(c)) yield return d;
+      }
+    }
+
+    foreach (var combo in Walk(SurfaceView).Where(e => e.GetType().Name == "SfComboBox"))
+    {
+      var t = combo.GetType();
+      if (t.GetProperty("ItemsSource")?.GetValue(combo) is not System.Collections.IEnumerable items) continue;
+      var texts = items.Cast<object?>().Select(ItemText).ToList();
+      foreach (var value in wanted)
+      {
+        var index = texts.FindIndex(x => string.Equals(x, value, StringComparison.OrdinalIgnoreCase));
+        if (index < 0) continue;
+        if (t.GetProperty("SelectedIndex") is { CanWrite: true } si && !Equals(si.GetValue(combo), index))
+          si.SetValue(combo, index);
+        break;
+      }
+    }
+  }
+
+  /// <summary>Display text of a combo item, whatever shape it has (dictionary, JSON, object with Text/text).</summary>
+  private static string ItemText(object? item) => item switch
+  {
+    null => "",
+    string s => s,
+    System.Text.Json.JsonElement je when je.ValueKind == System.Text.Json.JsonValueKind.Object && je.TryGetProperty("text", out var tx) => tx.ToString(),
+    System.Text.Json.Nodes.JsonObject jo => jo["text"]?.ToString() ?? "",
+    IDictionary<string, object?> d => d.TryGetValue("text", out var v) ? Convert.ToString(v) ?? "" : "",
+    System.Collections.IDictionary nd => nd.Contains("text") ? Convert.ToString(nd["text"]) ?? "" : "",
+    _ => Convert.ToString(item.GetType().GetProperty("text")?.GetValue(item)
+            ?? item.GetType().GetProperty("Text")?.GetValue(item) ?? item) ?? "",
+  };
+
   private void SetSurface(SurfaceModel? surface)
   {
+    if (surface is not null) Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(250), NormalizeInputs);
     _surface = surface;
     SurfaceView.Surface = surface;
     SurfaceScroll.IsVisible = surface is not null;

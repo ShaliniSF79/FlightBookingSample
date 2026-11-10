@@ -35,7 +35,7 @@ public sealed class A2uiFlightGridRenderer : IA2uiComponentRenderer
       AutoGenerateColumnsMode = AutoGenerateColumnsMode.None,
       SortingMode = DataGridSortingMode.None,
       SelectionMode = selection,
-      ColumnWidthMode = ColumnWidthMode.Fill,
+      ColumnWidthMode = ColumnWidthMode.Fill, // stretch on wide screens; columns' MinimumWidth makes it scroll sideways on phones
       GridLinesVisibility = GridLinesVisibility.Horizontal,
       HeaderGridLinesVisibility = GridLinesVisibility.Horizontal,
       HeaderRowHeight = 48,
@@ -60,10 +60,27 @@ public sealed class A2uiFlightGridRenderer : IA2uiComponentRenderer
     {
       if (initialized || grid.Handler is null) return;
       initialized = true;
-      foreach (var col in columns) grid.Columns.Add(BuildColumn(col));
+      foreach (var col in columns)
+      {
+        var column = BuildColumn(col);
+        // Each column is at least as wide as its header and longest value, so nothing is cut off.
+        // On a wide screen the columns still stretch (Fill); on a phone the grid scrolls sideways.
+        column.MinimumWidth = MinWidth(col, rows);
+        grid.Columns.Add(column);
+      }
       grid.ItemsSource = rows;
     };
     return grid;
+  }
+
+  private static double MinWidth(ColumnDef col, IEnumerable<Dictionary<string, object?>> rows)
+  {
+    if (col.Field == "action") return 130;
+    var longest = rows.Select(r => r.TryGetValue(col.Field, out var v) ? Convert.ToString(v, CultureInfo.InvariantCulture)?.Length ?? 0 : 0)
+                      .DefaultIfEmpty(0).Max();
+    if (!string.IsNullOrEmpty(col.Format)) longest += 2; // "$1,840"
+    var chars = Math.Max(longest, col.Header.Length);
+    return Math.Clamp(chars * 8.5 + 40, 90, 320);
   }
 
   private static DataGridColumn BuildColumn(ColumnDef col)
@@ -118,7 +135,7 @@ public sealed class A2uiFlightGridRenderer : IA2uiComponentRenderer
           FontSize = 14,
           VerticalOptions = LayoutOptions.Center,
           HorizontalTextAlignment = align,
-          LineBreakMode = LineBreakMode.TailTruncation,
+          LineBreakMode = LineBreakMode.NoWrap,
         };
         label.SetBinding(Label.TextProperty, new Binding($"[{col.Field}]", stringFormat: format));
         return new Grid { Padding = new Thickness(16, 0), Children = { label } };

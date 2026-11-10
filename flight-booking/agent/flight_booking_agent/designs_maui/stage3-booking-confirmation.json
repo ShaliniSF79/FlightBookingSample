@@ -14,8 +14,8 @@
         {
           "id": "root",
           "component": "Column",
-          "gap": 20,
-          "padding": 20,
+          "gap": 12,
+          "padding": 16,
           "children": [
             "successRow",
             "heroCol",
@@ -35,13 +35,14 @@
           "id": "successText",
           "component": "Text",
           "weight": 1,
-          "text": "✅ Booking confirmed successfully! Your e-ticket has been issued and sent to the passenger email."
+          "text": "✓ Booking confirmed successfully! Your e-ticket has been issued and sent to the passenger email.",
+          "textColor": "#15803D"
         },
         {
           "id": "heroCol",
           "component": "Column",
           "gap": 6,
-          "padding": 16,
+          "padding": 0,
           "children": [
             "heroTitle",
             "heroSub",
@@ -63,8 +64,8 @@
         {
           "id": "flightsRow",
           "component": "Row",
-          "gap": 16,
-          "padding": 16,
+          "gap": 12,
+          "padding": 0,
           "children": [
             "outboundCard",
             "returnCard"
@@ -77,10 +78,10 @@
           "weight": 1,
           "cornerRadius": 12,
           "borderWidth": 1,
-          "borderColor": "#E5E7EB",
-          "backgroundColor": "#FFFFFF",
-          "hasShadow": true,
-          "heightRequest": 190
+          "borderColor": "#E2E8F0",
+          "children": [
+            "outboundCol"
+          ]
         },
         {
           "id": "returnCard",
@@ -89,16 +90,16 @@
           "weight": 1,
           "cornerRadius": 12,
           "borderWidth": 1,
-          "borderColor": "#E5E7EB",
-          "backgroundColor": "#FFFFFF",
-          "hasShadow": true,
-          "heightRequest": 190
+          "borderColor": "#E2E8F0",
+          "children": [
+            "returnCol"
+          ]
         },
         {
           "id": "outboundCol",
           "component": "Column",
-          "gap": 8,
-          "padding": 20,
+          "gap": 6,
+          "padding": 16,
           "children": [
             "outboundTitle",
             "outboundSub",
@@ -125,8 +126,8 @@
         {
           "id": "returnCol",
           "component": "Column",
-          "gap": 8,
-          "padding": 20,
+          "gap": 6,
+          "padding": 16,
           "children": [
             "returnTitle",
             "returnSub",
@@ -154,7 +155,7 @@
           "id": "passengerCol",
           "component": "Column",
           "gap": 6,
-          "padding": 16,
+          "padding": 0,
           "children": [
             "passengerTitle",
             "passengerSub",
