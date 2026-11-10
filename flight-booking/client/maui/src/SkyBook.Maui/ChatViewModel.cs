@@ -1,55 +1,38 @@
 using System.Collections.ObjectModel;
-using System.Windows.Input;
-using Syncfusion.Maui.AIAssistView;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using Syncfusion.Maui.Chat;
 
 namespace SkyBook.Maui;
 
-/// <summary>Bindable state for <see cref="SfAIAssistView"/> (React: the AIAssistViewComponent + its refs).</summary>
-public sealed class ChatViewModel
+/// <summary>Chat state for <see cref="SfChat"/>: messages, the two authors and the typing indicator.</summary>
+public sealed class ChatViewModel : INotifyPropertyChanged
 {
-    private AssistItem? _typing;
+  public ChatViewModel()
+  {
+    CurrentUser = new Author { Name = "You" };
+    Bot = new Author { Name = "SkyBook Assistant" }; // set Avatar = "your_icon.png" to show an image
+    TypingIndicator = new ChatTypingIndicator { Authors = [Bot], Text = "SkyBook is typing…" };
+  }
 
-    public ObservableCollection<IAssistItem> AssistItems { get; } = [];
+  public ObservableCollection<object> Messages { get; } = [];
+  public Author CurrentUser { get; }
+  public Author Bot { get; }
+  public ChatTypingIndicator TypingIndicator { get; }
 
-    public Profile CurrentUser { get; } = new() { Name = "You" };
-    public Profile BotProfile { get; } = new() { Name = "SkyBook" };
+  private bool _showTyping;
+  public bool ShowTypingIndicator { get => _showTyping; private set { _showTyping = value; OnChanged(); } }
 
-    /// <summary>Raised when the user submits text from the built-in editor; the item is already in <see cref="AssistItems"/>.</summary>
-    public event Action<string>? PromptSubmitted;
+  public void AddUserMessage(string text) =>
+      Messages.Add(new TextMessage { Author = CurrentUser, Text = text, DateTime = DateTime.Now });
 
-    public ICommand RequestCommand { get; }
+  public void AddBotMessage(string text) =>
+      Messages.Add(new TextMessage { Author = Bot, Text = text, DateTime = DateTime.Now });
 
-    public ChatViewModel() => RequestCommand = new Command<object>(o =>
-    {
-        if (o is RequestEventArgs { RequestItem: { } item } e)
-        {
-            e.Handled = true; // we answer asynchronously via AddBotMessage
-            PromptSubmitted?.Invoke(item.Text ?? "");
-        }
-    });
+  public void ShowTyping() => ShowTypingIndicator = true;
+  public void HideTyping() => ShowTypingIndicator = false;
+  public void Clear() { Messages.Clear(); ShowTypingIndicator = false; }
 
-    public void AddUserMessage(string text) =>
-        AssistItems.Add(new AssistItem { Text = text, IsRequested = true, DateTime = DateTime.Now, ShowAssistItemFooter = false });
-
-    public void AddBotMessage(string text)
-    {
-        HideTyping();
-        AssistItems.Add(new AssistItem { Text = text, IsRequested = false, DateTime = DateTime.Now, ShowAssistItemFooter = false });
-    }
-
-    public void ShowTyping()
-    {
-        if (_typing is not null) return;
-        _typing = new AssistItem { Text = "…", IsRequested = false, DateTime = DateTime.Now, ShowAssistItemFooter = false };
-        AssistItems.Add(_typing);
-    }
-
-    public void HideTyping()
-    {
-        if (_typing is null) return;
-        AssistItems.Remove(_typing);
-        _typing = null;
-    }
-
-    public void Clear() { _typing = null; AssistItems.Clear(); }
+  public event PropertyChangedEventHandler? PropertyChanged;
+  private void OnChanged([CallerMemberName] string? n = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(n));
 }

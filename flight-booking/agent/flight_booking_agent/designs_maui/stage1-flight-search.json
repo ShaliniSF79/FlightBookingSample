@@ -67,24 +67,28 @@
           "label": "Trip Type",
           "displayMemberPath": "text",
           "textMemberPath": "text",
-          "selectedValuePath": "value",
+          "selectedValuePath": "text",
           "options": [
             {
               "text": "Round Trip",
-              "value": "roundTrip"
+              "value": "Round Trip"
             },
             {
               "text": "One Way",
-              "value": "oneWay"
+              "value": "One Way"
             },
             {
               "text": "Multi City",
-              "value": "multiCity"
+              "value": "Multi City"
             }
           ],
           "value": {
             "path": "/search/tripType"
-          }
+          },
+          "heightRequest": 48,
+          "minimumHeightRequest": 48,
+          "horizontalOptions": "Fill",
+          "verticalOptions": "Start"
         },
         {
           "id": "from",
@@ -93,7 +97,11 @@
           "label": "From",
           "value": {
             "path": "/search/from"
-          }
+          },
+          "heightRequest": 48,
+          "minimumHeightRequest": 48,
+          "horizontalOptions": "Fill",
+          "verticalOptions": "Start"
         },
         {
           "id": "to",
@@ -102,7 +110,11 @@
           "label": "To",
           "value": {
             "path": "/search/to"
-          }
+          },
+          "heightRequest": 48,
+          "minimumHeightRequest": 48,
+          "horizontalOptions": "Fill",
+          "verticalOptions": "Start"
         },
         {
           "id": "row2",
@@ -123,7 +135,11 @@
           "enableTime": false,
           "value": {
             "path": "/search/departureDate"
-          }
+          },
+          "heightRequest": 48,
+          "minimumHeightRequest": 48,
+          "horizontalOptions": "Fill",
+          "verticalOptions": "Start"
         },
         {
           "id": "returnDate",
@@ -134,7 +150,11 @@
           "enableTime": false,
           "value": {
             "path": "/search/returnDate"
-          }
+          },
+          "heightRequest": 48,
+          "minimumHeightRequest": 48,
+          "horizontalOptions": "Fill",
+          "verticalOptions": "Start"
         },
         {
           "id": "cabinClass",
@@ -143,28 +163,32 @@
           "label": "Cabin Class",
           "displayMemberPath": "text",
           "textMemberPath": "text",
-          "selectedValuePath": "value",
+          "selectedValuePath": "text",
           "options": [
             {
               "text": "Economy",
-              "value": "economy"
+              "value": "Economy"
             },
             {
               "text": "Premium Economy",
-              "value": "premiumEconomy"
+              "value": "Premium Economy"
             },
             {
               "text": "Business",
-              "value": "business"
+              "value": "Business"
             },
             {
               "text": "First Class",
-              "value": "first"
+              "value": "First Class"
             }
           ],
           "value": {
             "path": "/search/cabinClass"
-          }
+          },
+          "heightRequest": 48,
+          "minimumHeightRequest": 48,
+          "horizontalOptions": "Fill",
+          "verticalOptions": "Start"
         },
         {
           "id": "row3",
@@ -186,7 +210,12 @@
           "showUpDownButton": true,
           "value": {
             "path": "/search/passengers/adults"
-          }
+          },
+          "heightRequest": 48,
+          "minimumHeightRequest": 48,
+          "horizontalOptions": "Fill",
+          "verticalOptions": "Start",
+          "customFormat": "0"
         },
         {
           "id": "children",
@@ -199,7 +228,12 @@
           "showUpDownButton": true,
           "value": {
             "path": "/search/passengers/children"
-          }
+          },
+          "heightRequest": 48,
+          "minimumHeightRequest": 48,
+          "horizontalOptions": "Fill",
+          "verticalOptions": "Start",
+          "customFormat": "0"
         },
         {
           "id": "row4",
@@ -218,7 +252,11 @@
           "label": "Traveller First Name",
           "value": {
             "path": "/passenger/firstName"
-          }
+          },
+          "heightRequest": 48,
+          "minimumHeightRequest": 48,
+          "horizontalOptions": "Fill",
+          "verticalOptions": "Start"
         },
         {
           "id": "lastName",
@@ -227,7 +265,11 @@
           "label": "Traveller Last Name",
           "value": {
             "path": "/passenger/lastName"
-          }
+          },
+          "heightRequest": 48,
+          "minimumHeightRequest": 48,
+          "horizontalOptions": "Fill",
+          "verticalOptions": "Start"
         },
         {
           "id": "email",
@@ -236,7 +278,11 @@
           "label": "Contact Email",
           "value": {
             "path": "/passenger/email"
-          }
+          },
+          "heightRequest": 48,
+          "minimumHeightRequest": 48,
+          "horizontalOptions": "Fill",
+          "verticalOptions": "Start"
         },
         {
           "id": "row5",
@@ -255,7 +301,11 @@
           "mask": "AAAAAAAAA",
           "value": {
             "path": "/passenger/passportNumber"
-          }
+          },
+          "heightRequest": 48,
+          "minimumHeightRequest": 48,
+          "horizontalOptions": "Fill",
+          "verticalOptions": "Start"
         },
         {
           "id": "nationality",
@@ -264,32 +314,36 @@
           "label": "Nationality",
           "displayMemberPath": "text",
           "textMemberPath": "text",
-          "selectedValuePath": "value",
+          "selectedValuePath": "text",
           "options": [
             {
               "text": "United States",
-              "value": "US"
+              "value": "United States"
             },
             {
               "text": "United Kingdom",
-              "value": "UK"
+              "value": "United Kingdom"
             },
             {
               "text": "United Arab Emirates",
-              "value": "UAE"
+              "value": "United Arab Emirates"
             },
             {
               "text": "India",
-              "value": "IN"
+              "value": "India"
             },
             {
               "text": "Singapore",
-              "value": "SG"
+              "value": "Singapore"
             }
           ],
           "value": {
             "path": "/passenger/nationality"
-          }
+          },
+          "heightRequest": 48,
+          "minimumHeightRequest": 48,
+          "horizontalOptions": "Fill",
+          "verticalOptions": "Start"
         },
         {
           "id": "searchBtn",

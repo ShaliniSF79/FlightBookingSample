@@ -32,21 +32,10 @@
           ]
         },
         {
-          "id": "successIcon",
-          "component": "Text",
-          "text": "✓",
-          "textColor": "#16A34A",
-          "fontAttributes": "Bold"
-        },
-        {
           "id": "successText",
           "component": "Text",
           "weight": 1,
-          "text": "✅ Booking confirmed successfully! Your e-ticket has been issued and sent to olivia.bennett@skytravels.com."
-        },
-        {
-          "id": "div1",
-          "component": "Divider"
+          "text": "✅ Booking confirmed successfully! Your e-ticket has been issued and sent to the passenger email."
         },
         {
           "id": "heroCol",
@@ -77,16 +66,39 @@
           "gap": 16,
           "padding": 16,
           "children": [
-            "outboundCol",
-            "returnCol"
+            "outboundCard",
+            "returnCard"
           ]
+        },
+        {
+          "id": "outboundCard",
+          "component": "SyncfusionCardView",
+          "content": "outboundCol",
+          "weight": 1,
+          "cornerRadius": 12,
+          "borderWidth": 1,
+          "borderColor": "#E5E7EB",
+          "backgroundColor": "#FFFFFF",
+          "hasShadow": true,
+          "heightRequest": 190
+        },
+        {
+          "id": "returnCard",
+          "component": "SyncfusionCardView",
+          "content": "returnCol",
+          "weight": 1,
+          "cornerRadius": 12,
+          "borderWidth": 1,
+          "borderColor": "#E5E7EB",
+          "backgroundColor": "#FFFFFF",
+          "hasShadow": true,
+          "heightRequest": 190
         },
         {
           "id": "outboundCol",
           "component": "Column",
-          "weight": 1,
           "gap": 8,
-          "padding": 24,
+          "padding": 20,
           "children": [
             "outboundTitle",
             "outboundSub",
@@ -113,9 +125,8 @@
         {
           "id": "returnCol",
           "component": "Column",
-          "weight": 1,
           "gap": 8,
-          "padding": 24,
+          "padding": 20,
           "children": [
             "returnTitle",
             "returnSub",
@@ -138,10 +149,6 @@
           "id": "returnText",
           "component": "Text",
           "text": "2:00 PM LAX → 10:30 PM JFK • 1 Stop (ORD) • 8h 30m\nSeat 12A/12B • Terminal 5 • Status: Ticketed"
-        },
-        {
-          "id": "div2",
-          "component": "Divider"
         },
         {
           "id": "passengerCol",
