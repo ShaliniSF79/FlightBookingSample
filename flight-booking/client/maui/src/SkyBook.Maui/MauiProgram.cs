@@ -38,9 +38,9 @@ public static class MauiProgram
     SkyBook.Maui.BorderlessEditor.Register();
 
     var ai = new SkyBook.Core.AzureOpenAiOptions(
-    Endpoint: "Your EndPoint", 
-    ApiKey: "Include API Key",                                
-    Deployment: "gpt-4o");                                       
+    Endpoint: "", // Include EndPoint 
+    ApiKey: "",      // Include ApiKey                          
+    Deployment: "");    // Include Deployment Name                                 
 
     builder.Services.AddSingleton(_ => SkyBook.Maui.Ui.SkyHost.Create(CatalogId));
     builder.Services.AddSingleton(_ => new HttpClient { Timeout = TimeSpan.FromMinutes(3) });

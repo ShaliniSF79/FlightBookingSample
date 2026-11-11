@@ -30,9 +30,9 @@ public partial class MainPage : ContentPage
   private bool _busy;
   private bool _compact;
   private Stage? _activeStage;
-  private string? _silentPayload; // React: silentPayloadRef
+  private string? _silentPayload;
   private SurfaceModel? _surface;
-  private bool _firstPageShown; // the 5 s workspace intro plays only once per session (reset on Home)
+  private bool _firstPageShown;
 
   public MainPage(SurfaceHost host, IAgentClient agent, BookingSession session)
   {
@@ -542,13 +542,26 @@ public partial class MainPage : ContentPage
   /// <summary>Port of <c>onPromptRequest</c> + <c>sendToAgent</c> (App.tsx).</summary>
   private async Task SubmitPromptAsync(string text, string? silentPayload, bool alreadyShown)
   {
-    if (_busy) return; // ignore prompts while a response is pending
+    if (_busy) return;
+
     _silentPayload = silentPayload;
-    if (!alreadyShown) _chat.AddUserMessage(text);
+
+    if (!alreadyShown)
+    {
+      _chat.AddUserMessage(text);
+
+      ApplyState();          // Force UI update
+      await Task.Delay(100); // Give MAUI time to render
+    }
+
     _session.RecordUserPrompt(text);
+
     _view = View.Chat;
     _tab = Tab.Chat;
-    var payload = _silentPayload; _silentPayload = null;
+
+    var payload = _silentPayload;
+    _silentPayload = null;
+
     await SendToAgentAsync(payload ?? text, silent: payload is not null);
   }
 
@@ -618,7 +631,20 @@ public partial class MainPage : ContentPage
     catch (Exception ex)
     {
       System.Diagnostics.Debug.WriteLine($"[A2UI] fetch error: {ex}");
-      _chat.AddBotMessage($"Something went wrong: {ex.Message}");
+
+      // Missing AI configuration -> switch to offline mode
+      if (ex.Message.Contains("API key", StringComparison.OrdinalIgnoreCase) ||
+          ex.Message.Contains("OpenRouter", StringComparison.OrdinalIgnoreCase) ||
+          ex.Message.Contains("Azure OpenAI", StringComparison.OrdinalIgnoreCase))
+      {
+        await ShowBundledStageAsync(text);
+
+        
+        return;
+      }
+
+      _chat.AddBotMessage(
+          "Unable to connect to the AI service. Please try again later.");
     }
     finally
     {
@@ -645,8 +671,9 @@ public partial class MainPage : ContentPage
 
     if (file is null)
     {
-      _chat.AddBotMessage($"I can't reach the SkyBook agent at {AppConfig.AgentUrl}, so I can't answer free-text requests yet. " +
-                          "Start the agent (or harness/mock_agent.py) and try again, or pick a step from the workspace.");
+      _chat.AddBotMessage(
+    "AI Assistant is currently unavailable. " +
+    "You can continue using the flight booking workflow manually.");
       return;
     }
 
